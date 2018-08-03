@@ -1,26 +1,30 @@
-var messages = [
+let messages = [
 	'⇄', 'A', 'B', 'C', 'D', '➟', '🔊&#xFE0E;', '↺'
 ];
 
 // Initialize Firebase
-var config = {
+let url = window.location.href;
+config = {
 	// apiKey: "AIzaSyCWYRgBALYoIjZgn1hT7lQbfnfVeqDwEo8",
 	apiKey: "AIzaSyAc286y-5g5WL4vtSgCsmEV_afxYyO_kYM",
 	databaseURL: "https://androbuzz-dev.firebaseio.com/"
 	// databaseURL: "https://androbuzz-8d0b1.firebaseio.com/"
 };
-firebase.initializeApp(config);
-var database = firebase.database();
-var clientId;
-var clientJson;
-var server_ping = 1;
-var firebase_ping = 1;
-var start_time = 1;
-var allDevices;
-var batteryLevel;
-var signalStrength;
 
-// var clientRef = database.ref('clientId');
+
+
+firebase.initializeApp(config);
+let database = firebase.database();
+let clientId;
+let clientJson;
+let server_ping = 1;
+let firebase_ping = 1;
+let start_time = 1;
+let allDevices;
+let batteryLevel;
+let signalStrength;
+
+// let clientRef = database.ref('clientId');
 
 // clientRef.on('value', function(snapshot) {
 // 	if ( snapshot.val() !== null ) {
@@ -30,12 +34,12 @@ var signalStrength;
 // });
 
 $( 'document' ).ready( function() {
-	var view = {};
-	var messageList = $( '#consoleDiv' );
-	var mv = $( '#main-view' );
+	let view = {};
+	let messageList = $( '#consoleDiv' );
+	let mv = $( '#main-view' );
 
 	function getPhones() {
-		var request = {
+		let request = {
 			'action': 'getRegisteredDevices',
 		};
 		$.ajax( {
@@ -45,10 +49,10 @@ $( 'document' ).ready( function() {
 			data: request,
 			success: function( data ) {
 				// here we create the dropdown options
-				var dropdownHTML = '';
+				let dropdownHTML = '';
 				allDevices = data;
-				var totalPhones = data.length;
-				for ( var i = 0; i < totalPhones; i++ ) {
+				let totalPhones = data.length;
+				for ( let i = 0; i < totalPhones; i++ ) {
 					dropdownHTML += '<li><a class=\"dropDownItem\" id=\"' + data[i]["reg_id"] + '\" href=\"#\">' + data[i]['model'] + ' &bull; ' + data[i]['number'] + '</a></li>';
 				}
 				// dropdownHTML += '<li class="divider"></li>';
@@ -57,9 +61,9 @@ $( 'document' ).ready( function() {
 				view['registered-phones'] = dropdownHTML;
 				redraw();
 				$(".dropDownItem").click(function(){
-					var regId = $(this).attr("id");
+					let regId = $(this).attr("id");
 					clientId = regId;
-					for(var i=0; i<allDevices.length; i++){
+					for(let i=0; i<allDevices.length; i++){
 						if(allDevices[i]["reg_id"] === clientId){
 							clientJson = allDevices[i];
 						}
@@ -78,7 +82,7 @@ $( 'document' ).ready( function() {
 	getPhones();
 
 	function redraw( field, value ) {
-		var windowHeight = $( window ).height();
+		let windowHeight = $( window ).height();
 		$( '#main-view' ).css( 'max-height', windowHeight + 'px' );
 
 		if ( field === undefined || value === undefined ) {
@@ -94,9 +98,9 @@ $( 'document' ).ready( function() {
 	}
 
 	$( '.action' ).click( function() {
-		var message = $( this ).attr( 'name' );
+		let message = $( this ).attr( 'name' );
 		redraw( 'status', 'Sending message... ' + message );
-		var currentTime = new Date(),
+		let currentTime = new Date(),
 			hours = currentTime.getHours(),
 			minutes = currentTime.getMinutes();
 		seconds = currentTime.getSeconds();
@@ -106,12 +110,12 @@ $( 'document' ).ready( function() {
 		if ( seconds < 10 ) {
 			seconds = "0" + seconds;
 		}
-		var timestamp = hours + ':' + minutes + ':' + seconds;
+		let timestamp = hours + ':' + minutes + ':' + seconds;
 		start_time = Date.now();
 
 		// Prepare data
-		var json = { "message": message, "clientId": clientId };
-		var request = {
+		let json = { "message": message, "clientId": clientId };
+		let request = {
 			'action': 'androbuzz',
 			'message': JSON.stringify(json)
 		};
@@ -125,14 +129,14 @@ $( 'document' ).ready( function() {
 			success: function( data ) {
 				console.log("androBuzz response: " + JSON.stringify(data));
 				if(data['response'] == "null") return;
-				var msg = JSON.parse(data['response'].substring(1, data['response'].length-1));
+				let msg = JSON.parse(data['response'].substring(1, data['response'].length-1));
 				total_ping = Date.now() - start_time;
 				firebase_ping = data['firebase_ping'];
 				server_ping = total_ping - firebase_ping;
 				view['ping'] = (server_ping) + 'ms + ' + data['firebase_ping'] + 'ms';
 
-				var msgId = data['messageId'];
-				var msgId = data['battery'];
+				let msgId = data['messageId'];
+				let msgId = data['battery'];
 				view['response'] = msgId;
 				view['status'] = '<strong>' + message + '</strong> sent. Waiting for delivery confirmation...';
 				view['client_id'] = data['clientId'];
@@ -149,9 +153,9 @@ $( 'document' ).ready( function() {
 
 				view['message_id'] = 'msgId: ' + msgId;
 
-				var dataref = database.ref('messages/' + clientId + '/' + data['messageId']);
+				let dataref = database.ref('messages/' + clientId + '/' + data['messageId']);
 
-				var timeOut = setTimeout(function(){
+				let timeOut = setTimeout(function(){
 					dataref.off();
 					redraw( 'status', 'Operation timed out. Ready.' );
 				}, 15000 );
@@ -190,8 +194,8 @@ $( 'document' ).ready( function() {
 		return false;
 	} );
 } );
-var seconds = 0;
-var timer = setInterval( function() {
+let seconds = 0;
+let timer = setInterval( function() {
 	if ( seconds < 60 )
 		$( '#timer' ).html( seconds + 's ago' );
 	else
