@@ -131,6 +131,9 @@ body {
 .panel {
   margin-bottom: 10px; }
 
+.btn-disabled {
+  pointer-events: none; }
+
 .panel-body, .panel-footer, .panel-heading {
   padding-left: 10px;
   padding-right: 10px; }

@@ -81,6 +81,7 @@ $( 'document' ).ready( function() {
 					redraw();
 					$( '#NOP' ).click();
 					$('.panel-heading > .dropdown').remove();
+					$('.btn-disabled').removeClass('btn-disabled').addClass('btn-primary');
 				});
 			}
 		} );
@@ -134,7 +135,7 @@ $( 'document' ).ready( function() {
 			url: 'functions.php',
 			data: request,
 			success: function( data ) {
-				console.log("androBuzz response: " + JSON.stringify(data));
+				// console.log("androBuzz response: " + JSON.stringify(data));
 				if(data['response'] == "null") return;
 				let msg = JSON.parse(data['response'].substring(1, data['response'].length-1));
 				total_ping = Date.now() - start_time;
