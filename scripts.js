@@ -194,12 +194,13 @@ $( 'document' ).ready( function() {
 		return false;
 	} );
 } );
+
 let seconds = 0;
-let timer = setInterval( function() {
+setInterval( function() {
 	if ( seconds < 60 )
 		$( '#timer' ).html( seconds + 's ago' );
 	else
-		$( '#timer' ).html( 'over 1 minute ago' );
+		$( '#timer' ).html( Math.floor(seconds / 60) + ' minutes ago' );
 	++seconds;
 }, 1000 );
 
