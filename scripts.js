@@ -136,7 +136,7 @@ $( 'document' ).ready( function() {
 				view['ping'] = (server_ping) + 'ms + ' + data['firebase_ping'] + 'ms';
 
 				let msgId = data['messageId'];
-				let msgId = data['battery'];
+				// let msgId = data['battery'];
 				view['response'] = msgId;
 				view['status'] = '<strong>' + message + '</strong> sent. Waiting for delivery confirmation...';
 				view['client_id'] = data['clientId'];
