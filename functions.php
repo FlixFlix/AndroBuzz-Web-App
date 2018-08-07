@@ -66,7 +66,8 @@ function getRegisteredDevices() {
 			"reg_id" => $clients[$key]['clientId'],
 			"model"  => $clients[$key]['model'],
 			"number" => $clients[$key]['number'],
-			"name"   => $clients[$key]['brand'], // Please store phone name too: Settings > General > About Phone > Name
+			"name" => $clients[$key]['name'],
+			"brand"   => $clients[$key]['brand'], // Please store phone name too: Settings > General > About Phone > Name
 		];
 		$i++;
 	}

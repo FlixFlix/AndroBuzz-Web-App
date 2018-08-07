@@ -14,15 +14,29 @@ body {
   transition: 0.125s; }
 
 .panel-heading {
-  padding: 15px; }
+  display: flex;
+  align-items: center;
+  padding: 10px; }
   .panel-heading .dropdown {
-    display: inline-block;
-    float: right;
-    color: #333;
-    margin-top: -5px; }
+    float: left;
+    display: flex;
+    color: #333; }
     .panel-heading .dropdown .btn {
       margin: 0 !important;
-      padding: 4px 12px; }
+      padding: 5px 12px; }
+    .panel-heading .dropdown .dropDownItem {
+      display: flex; }
+      .panel-heading .dropdown .dropDownItem span {
+        display: inline-block; }
+      .panel-heading .dropdown .dropDownItem .dropdownNumber {
+        margin-left: 20px;
+        flex-grow: 1;
+        text-align: right; }
+  .panel-heading .panel-title {
+    flex-grow: 1;
+    font-weight: normal;
+    line-height: 30px;
+    text-transform: uppercase; }
 
 .abc {
   display: flex;
@@ -82,19 +96,23 @@ body {
 .float-bottom {
   margin-top: auto; }
 
+#main-wrapper {
+  margin: 0 auto 10px;
+  padding: 0 10px;
+  max-width: 414px; }
+
 #main-view {
-  margin: 0 auto;
   float: none;
-  padding: 10px;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  max-width: 414px;
   /* iPhone 6 Plus */
   /*max-height: 980px;*/
   position: relative;
   top: 0;
-  bottom: 0; }
+  bottom: 0;
+  margin-bottom: -10px;
+  padding: 10px 0; }
 
 .row {
   margin: 0; }
@@ -112,11 +130,6 @@ body {
 
 .panel {
   margin-bottom: 10px; }
-
-.panel-title {
-  display: inline;
-  font-weight: normal;
-  text-transform: uppercase; }
 
 .panel-body, .panel-footer, .panel-heading {
   padding-left: 10px;

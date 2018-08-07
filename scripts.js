@@ -29,6 +29,19 @@ $( 'document' ).ready( function() {
 	let messageList = $( '#consoleDiv' );
 	let mv = $( '#main-view' );
 
+	function formatPhoneNumber( s ) {
+		if ( s[0] == '1' ) {
+			s = s.substr( 1 );
+		}
+		var s2 = ("" + s).replace( /\D/g, '' );
+		var m = s2.match( /^(\d{3})(\d{3})(\d{4})$/ );
+		return (!m) ? null : "(" + m[1] + ") " + m[2] + "-" + m[3];
+	}
+
+	function setDevice( reg_id ) {
+		console.log( 'clicked ' + reg_id );
+	}
+
 	function getPhones() {
 		let request = {
 			'action': 'getRegisteredDevices',
@@ -44,14 +57,18 @@ $( 'document' ).ready( function() {
 				allDevices = data;
 				let totalPhones = data.length;
 				for ( let i = 0; i < totalPhones; i++ ) {
-					dropdownHTML += '<li><a class=\"dropDownItem\" id=\"' + data[i]["reg_id"] + '\" href=\"#\">' + data[i]['model'] + ' &bull; ' + data[i]['number'] + '</a></li>';
+					dropdownHTML += '<li><a class="dropDownItem"' + 'id="' + data[i]['reg_id'] + '"' + 'href="javascript:void(0);">' +
+						'<span class="dropdownModel">' + data[i]['name'] + ' (' + data[i]['model'] + ')</span>' +
+						'<span class="dropdownNumber">' + formatPhoneNumber( data[i]['number'] ) + '</span>' +
+						'</a></li>';
 				}
-				// dropdownHTML += '<li class="divider"></li>';
-				// dropdownHTML += '<li><a class="dropdown-item" href="javascript:setDefaultPhone">Set as default</a></li>';
+				dropdownHTML += '<li class="divider"></li>';
+				dropdownHTML += '<li><a class="dropdown-item" href="javascript:setDefaultPhone">Set as default (not working yet)</a></li>';
 
 				view['registered-phones'] = dropdownHTML;
 				redraw();
 				$(".dropDownItem").click(function(){
+					console.log( 'clicked' );
 					let regId = $(this).attr("id");
 					clientId = regId;
 					for(let i=0; i<allDevices.length; i++){
@@ -59,16 +76,15 @@ $( 'document' ).ready( function() {
 							clientJson = allDevices[i];
 						}
 					}
-					view['client_id'] = clientId;
-					view['device'] = clientJson['name'] + '</br>' + clientJson['model'] + '</br>' + clientJson['number'];
+					// view['client_id'] = clientId;
+					view['device'] = clientJson['name'];
 					redraw();
-					$( "#NOP" ).click();
+					$( '#NOP' ).click();
+					$('.panel-heading > .dropdown').remove();
 				});
 			}
 		} );
 	}
-
-	
 
 	getPhones();
 
@@ -135,8 +151,7 @@ $( 'document' ).ready( function() {
 					// view['device'] = clientJson['name'];
 					// when device name works in the database, use this line instead of the one below
 
-
-					view['device'] = clientJson['name'] + '</br>' + clientJson['model'] + '</br>' + clientJson['number'];
+					view['device'] = clientJson['name']; // + clientJson['model'] + '&nbsp;&bull;&nbsp;' + clientJson['number'];
 				}
 
 				view['message'] = '<span class="action_pill panel">' + messages[data['message']] + '</span>&nbsp;<span id=timer>0</span> ';
