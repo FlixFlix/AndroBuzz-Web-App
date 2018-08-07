@@ -29,9 +29,11 @@ body {
       .panel-heading .dropdown .dropDownItem span {
         display: inline-block; }
       .panel-heading .dropdown .dropDownItem .dropdownNumber {
-        margin-left: 20px;
+        margin-left: 30px;
         flex-grow: 1;
         text-align: right; }
+        .panel-heading .dropdown .dropDownItem .dropdownNumber span {
+          margin-right: 20px; }
   .panel-heading .panel-title {
     flex-grow: 1;
     font-weight: normal;

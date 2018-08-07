@@ -22,6 +22,14 @@ function initFirebaseConfig() {
 	return config;
 }
 
+function formatPhoneNumber( s ) {
+	if ( s[0] == '1' ) {
+		s = s.substr( 1 );
+	}
+	var s2 = ("" + s).replace( /\D/g, '' );
+	var m = s2.match( /^(\d{3})(\d{3})(\d{4})$/ );
+	return (!m) ? null : "(" + m[1] + ") " + m[2] + "-" + m[3];
+}
 
 
 $( 'document' ).ready( function() {
@@ -29,14 +37,6 @@ $( 'document' ).ready( function() {
 	let messageList = $( '#consoleDiv' );
 	let mv = $( '#main-view' );
 
-	function formatPhoneNumber( s ) {
-		if ( s[0] == '1' ) {
-			s = s.substr( 1 );
-		}
-		var s2 = ("" + s).replace( /\D/g, '' );
-		var m = s2.match( /^(\d{3})(\d{3})(\d{4})$/ );
-		return (!m) ? null : "(" + m[1] + ") " + m[2] + "-" + m[3];
-	}
 
 	function setDevice( reg_id ) {
 		console.log( 'clicked ' + reg_id );
@@ -58,8 +58,8 @@ $( 'document' ).ready( function() {
 				let totalPhones = data.length;
 				for ( let i = 0; i < totalPhones; i++ ) {
 					dropdownHTML += '<li><a class="dropDownItem"' + 'id="' + data[i]['reg_id'] + '"' + 'href="javascript:void(0);">' +
-						'<span class="dropdownModel">' + data[i]['name'] + ' (' + data[i]['model'] + ')</span>' +
-						'<span class="dropdownNumber">' + formatPhoneNumber( data[i]['number'] ) + '</span>' +
+						'<span class="dropdownName">' + data[i]['name'] + '</span>' +
+						'<span class="dropdownNumber"><span>' + data[i]['brand'] + ' ' + data[i]['model'] + '</span>' + formatPhoneNumber( data[i]['number'] ) + '</span>' +
 						'</a></li>';
 				}
 				dropdownHTML += '<li class="divider"></li>';
@@ -81,7 +81,7 @@ $( 'document' ).ready( function() {
 					redraw();
 					$( '#NOP' ).click();
 					$('.panel-heading > .dropdown').remove();
-					$('.btn-disabled').removeClass('btn-disabled').addClass('btn-primary');
+					$( '.btn-disabled' ).removeClass( 'btn-disabled' ).addClass( 'btn-primary' );
 				});
 			}
 		} );
@@ -152,7 +152,7 @@ $( 'document' ).ready( function() {
 					// view['device'] = clientJson['name'];
 					// when device name works in the database, use this line instead of the one below
 
-					view['device'] = clientJson['name']; // + clientJson['model'] + '&nbsp;&bull;&nbsp;' + clientJson['number'];
+					view['device'] = clientJson['name'] + '&nbsp;&bull;&nbsp;' + clientJson['brand'] + '&nbsp;' + clientJson['model'] + '&nbsp;&bull;&nbsp;' + formatPhoneNumber(clientJson['number']);
 				}
 
 				view['message'] = '<span class="action_pill panel">' + messages[data['message']] + '</span>&nbsp;<span id=timer>0</span> ';
