@@ -3,35 +3,26 @@ let messages = [
 ];
 
 // Initialize Firebase
-let url = window.location.href;
-config = {
-	// apiKey: "AIzaSyCWYRgBALYoIjZgn1hT7lQbfnfVeqDwEo8",
-	apiKey: "AIzaSyAc286y-5g5WL4vtSgCsmEV_afxYyO_kYM",
-	databaseURL: "https://androbuzz-dev.firebaseio.com/"
-	// databaseURL: "https://androbuzz-8d0b1.firebaseio.com/"
-};
+function initFirebaseConfig() {
+	let url = window.location.hostname + window.location.pathname;
+	let config = {};
+	switch ( url ) {
+		case 'androbuzz.iredesigned.com/':
+			config.apiKey = "AIzaSyClbcP5VcyQnl93OplUJHsQbAJikiDfJec";
+			config.databaseURL = "https://androbuzz-prod.firebaseio.com/"
+			break;
+		case 'androbuzz.iredesigned.com/dev':
+		case 'ab.test/':
+			config.apiKey = "AIzaSyAc286y-5g5WL4vtSgCsmEV_afxYyO_kYM";
+			config.databaseURL = "https://androbuzz-dev.firebaseio.com/"
+			break;
+		default:
+			alert( 'Unknown host!' );
+	}
+	return config;
+}
 
 
-
-firebase.initializeApp(config);
-let database = firebase.database();
-let clientId;
-let clientJson;
-let server_ping = 1;
-let firebase_ping = 1;
-let start_time = 1;
-let allDevices;
-let batteryLevel;
-let signalStrength;
-
-// let clientRef = database.ref('clientId');
-
-// clientRef.on('value', function(snapshot) {
-// 	if ( snapshot.val() !== null ) {
-// 		clientJson = snapshot.val();
-// 		clientId = clientJson['clientId'];
-// 	}
-// });
 
 $( 'document' ).ready( function() {
 	let view = {};
@@ -204,10 +195,24 @@ setInterval( function() {
 	++seconds;
 }, 1000 );
 
+firebase.initializeApp( initFirebaseConfig() );
+let database = firebase.database(),
+	clientId,
+	clientJson,
+	server_ping = 1,
+	firebase_ping = 1,
+	start_time = 1,
+	allDevices,
+	batteryLevel,
+	signalStrength;
+
 $( window ).on( 'load', function() {
 	// setTimeout( function() {
 	// 	$( "#NOP" ).click();
 	// }, 1000 ); // Test connection and initialize view
+
+
+
 	$( "#CLEAR" ).on( 'click', function() {
 		$( '#consoleDiv' ).find( 'span' ).slideUp( "normal", function() {
 			$( this ).remove();
