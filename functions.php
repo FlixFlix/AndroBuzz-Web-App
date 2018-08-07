@@ -40,7 +40,7 @@ function androbuzz() {
 	$encoded_message           = $data[ "message" ];
 	$message                   = json_decode( $encoded_message );
 	$start_time                = microtime( TRUE );
-	$uniqueId                  = date('Y-m-d') . ' ' . (round($start_time * 1000) - strtotime('today midnight')*1000);
+	$uniqueId                  = date( 'Y-m-d' ) . ' ' . ( 86400000 - ( round( $start_time * 1000 ) - strtotime( 'today midnight' ) * 1000 ) );
 	$response                  = send_to_device( $uniqueId, $message->message, $message->clientId );
 	$end_time                  = microtime( TRUE );
 	$return[ "firebase_ping" ] = round( ( $end_time - $start_time ) * 1000 );
