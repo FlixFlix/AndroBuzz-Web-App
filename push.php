@@ -5,58 +5,29 @@
  */
 class Push {
 
-    // push message title
-    private $title;
-    private $message;
-    private $image;
-    // push message payload
-    private $data;
-    // flag indicating whether to show the push
-    // notification or not
-    // this flag will be useful when perform some operation
-    // in background when push is received
-    private $is_background;
+	private $command;
 
-    private $msgId;
+    private $messageDbKey;
 
     function __construct() {
         
     }
 
-    public function setTitle($title) {
-        $this->title = $title;
+	public function setCommand( $command ) {
+		$this->command = $command;
     }
 
-    public function setMessage($message) {
-        $this->message = $message;
-    }
-
-    public function setImage($batteryLevel) {
-        $this->image = $batteryLevel;
-    }
-
-    public function setPayload($data) {
-        $this->data = $data;
-    }
-
-    public function setIsBackground($is_background) {
-        $this->is_background = $is_background;
-    }
-
-    public function setMsgId($messageId){
-        $this->msgId = $messageId;
+	public function setMessageDbKey( $messageDbKey ) {
+		$this->messageDbKey = $messageDbKey;
     }
 
     public function getPush() {
-        $res = array();
-        $res['data']['title'] = $this->title;
-        $res['data']['is_background'] = $this->is_background;
-        $res['data']['message'] = $this->message;
-        $res['data']['image'] = $this->image;
-        $res['data']['payload'] = $this->data;
-        $res['data']['timestamp'] = date('Y-m-d G:i:s P');
-        $res['data']['uniqueId'] = $this->msgId;
-        return $res;
+	    $res                          = [];
+	    $res[ 'data' ][ 'command' ]   = $this->command;
+	    $res[ 'data' ][ 'timestamp' ] = date( 'Y-m-d G:i:s P' );
+	    $res[ 'data' ][ 'messageDbKey' ]  = $this->messageDbKey;
+
+	    return $res;
     }
 
 }

@@ -8,27 +8,8 @@ class Firebase {
 	        'priority' => 'high',
 	        'data'     => $message,
         );
-        return $this->sendPushNotification($fields);
-    }
-
-    // Sending message to a topic by topic name
-    public function sendToTopic($to, $message) {
-        $fields = array(
-            'to' => '/topics/' . $to,
-            'data' => $message,
-        );
-        return $this->sendPushNotification($fields);
-    }
-
-    // sending push message to multiple users by firebase registration ids
-    public function sendMultiple($registration_ids, $message) {
-        $fields = array(
-	        'to'       => $registration_ids,
-	        'priority' => 'high',
-	        'data'     => $message,
-        );
-
-        return $this->sendPushNotification($fields);
+		$return = $this->sendPushNotification($fields);
+	    return $return;
     }
 
     // function makes curl request to firebase servers
@@ -60,14 +41,16 @@ class Firebase {
 
         // Execute post
         $result = curl_exec($ch);
-        if ($result === FALSE) {
+
+	    if ($result === FALSE) {
+        	file_put_contents('error_log.txt', PHP_EOL . date('F j, Y, g:i:s a').' CURL error: '.curl_error($ch), FILE_APPEND);
             die('Curl failed: ' . curl_error($ch));
         }
 
         // Close connection
         curl_close($ch);
 
-        return $result;
+        return json_decode($result);
     }
 
     public function getJson($path){
@@ -90,7 +73,7 @@ class Firebase {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         // Disabling SSL Certificate support temporarly
-        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         // curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
 

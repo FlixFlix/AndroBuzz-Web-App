@@ -1,3 +1,32 @@
+.signal-strength {
+  height: 20px;
+  width: 23px;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: flex-end; }
+  .signal-strength .bar {
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 5px;
+    display: inline-block; }
+    .signal-strength .bar.bar-1 {
+      height: 25%; }
+    .signal-strength .bar.bar-2 {
+      height: 50%; }
+    .signal-strength .bar.bar-3 {
+      height: 75%; }
+    .signal-strength .bar.bar-4 {
+      height: 100%; }
+  .signal-strength[data-bars="1"] .bar:nth-child(-n+1) {
+    background-color: white; }
+  .signal-strength[data-bars="2"] .bar:nth-child(-n+2) {
+    background-color: white; }
+  .signal-strength[data-bars="3"] .bar:nth-child(-n+3) {
+    background-color: white; }
+  .signal-strength[data-bars="4"] .bar:nth-child(-n+4) {
+    background-color: white; }
+  .signal-strength[data-bars="5"] .bar:nth-child(-n+5) {
+    background-color: white; }
+
 html {
   width: 100%;
   height: 100%; }
@@ -34,11 +63,15 @@ body {
         text-align: right; }
         .panel-heading .dropdown .dropDownItem .dropdownNumber span {
           margin-right: 20px; }
-  .panel-heading .panel-title {
+  .panel-heading div.panel-title {
     flex-grow: 1;
     font-weight: normal;
-    line-height: 30px;
     text-transform: uppercase; }
+    .panel-heading div.panel-title h4 {
+      font-size: 12px; }
+
+.fadedOut {
+  opacity: 0.1; }
 
 .abc {
   display: flex;
@@ -152,7 +185,6 @@ td {
     text-align: right; }
 
 .batteryContainer {
-  display: none;
   /* We'll revisit once we get this to work */
   float: right; }
   .batteryContainer > span {

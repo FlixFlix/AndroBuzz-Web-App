@@ -1,3 +1,4 @@
+@import "signal-bars";
 html {
 	width: 100%;
 	height: 100%;
@@ -45,15 +46,20 @@ body {
 	}
 
 	}
-	.panel-title {
+	div.panel-title {
 		flex-grow: 1;
 		font-weight: normal;
-		line-height: 30px;
+		//line-height: 30px;
 		text-transform: uppercase;
+		h4 {
+			font-size: 12px;
+		}
 	}
 }
 
-
+.fadedOut {
+	opacity: 0.1;
+}
 
 .abc {
 	display: flex;
@@ -195,7 +201,7 @@ td {
 }
 
 .batteryContainer {
-	display: none;
+	//display: none;
 	/* We'll revisit once we get this to work */
 	float: right;
 	> span {
