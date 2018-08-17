@@ -82,8 +82,8 @@ $( 'document' ).ready( function() {
 							clientToken = regToken;
 						}
 					}
-					view['device-name'] = client['name'] + '&nbsp;&bull;&nbsp;' + formatPhoneNumber( client['number'] );
-					view['make-model'] = client['brand'] + '&nbsp;' + client['model'];
+					view['device-name'] = client['name'];
+					view['device-details'] = client['brand'] + '&nbsp;' + client['model'];
 					redraw();
 
 					$( '#NOP' ).click();
@@ -157,13 +157,13 @@ $( 'document' ).ready( function() {
 					firebase_ping = data['firebase_ping'],
 					server_ping = total_ping - firebase_ping;
 				view['ping'] = (server_ping) + 'ms + ' + data['firebase_ping'] + 'ms';
-				view['status'] = '<strong>' + command + '</strong> sent. Waiting for delivery confirmation...';
+				view['status'] = '<strong>' + command + '</strong> sent to server...';
 				view['last-message'] = '<span class="action_pill panel">' + msgSymbols[data['command']] + '</span>&nbsp;<span id=timer>0</span> ';
 				timestampSeconds = 0; // Start counter
 
 				let timeOut = setTimeout(function(){
 					dataRef.off();
-					redraw( 'status', 'Operation timed out. Ready.' );
+					redraw( 'status', 'Timed out. Possibly not delivered.' );
 				}, 15000 );
 
 				redraw();

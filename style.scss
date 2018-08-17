@@ -19,8 +19,11 @@ body {
 }
 
 .panel-heading {
+	position: relative;
 	display: flex;
+	align-items: center;
 	padding: 10px;
+
 	.dropdown {
 		float: left;
 		display: flex;
@@ -47,12 +50,22 @@ body {
 
 	}
 	div.panel-title {
+		display: flex;
+		height: 12px;
 		flex-grow: 1;
 		font-weight: normal;
 		line-height: 1;
 		text-transform: uppercase;
-		h4 {
+		h3 {
 			font-size: 12px;
+		}
+		h4.panel-status {
+			position: absolute;
+			display: block;
+			width: 100%;
+			left: 0;
+			font-size: 12px;
+			text-align: center;
 		}
 	}
 }

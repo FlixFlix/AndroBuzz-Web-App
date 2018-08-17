@@ -52,8 +52,8 @@
                         <div class="bar-4 bar"></div>
                     </div>
                     <div class="panel-title" data-title="">
-                        <h3 class="panel-title" data-label="device-name" data-title="make-model"></h3>
-                        <h4 class="panel-title" data-label="make-model"></h4>
+                        <h3 class="panel-title" data-label="device-name" data-title="device-details"></h3>
+                        <h4 class="panel-title panel-status" data-label="status"></h4>
                     </div>
                     </h3>
                     <div class=battery-container><span data-label="battery-level">%</span><div class="battery"><div class="level"></div></div></div>
@@ -69,19 +69,11 @@
                             <td>Ping</td>
                             <td data-label="ping"></td>
                         </tr>
-                        <tr>
-                            <td>Signal strength:</td>
-                            <td data-label="signal-strength"></td>
-                        </tr>
-                        <tr>
-                            <td>Battery level:</td>
-                            <td data-label="battery-level"></td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="panel-footer">
-                    <div><strong>Status:</strong> <span data-label="status"></span></div>
+                    <!--                    <div><strong>Status:</strong> <span data-label="status"></span></div>-->
                     <div class="error" data-label="error"></div>
                     <div id="consoleDiv"></div>
                 </div>
@@ -91,38 +83,38 @@
                 <button name="2" type="button" class="action btn btn-block btn-lg btn-disabled">B</button>
                 <button name="3" type="button" class="action btn btn-block btn-lg btn-disabled">C</button>
             </div>
-        </div>
-        <div class="float-bottom btn-group btn-group-justified">
-            <div class="btn-group">
-                <button name="4" type="button" class="action btn btn-lg btn-default">
-                    <span style="font-size: 20px;">D</span>
-                </button>
-            </div>
-            <div class="btn-group">
-                <button name="7" type="button" class="action btn btn-lg  btn-default">
-                    <i class="glyphicon glyphicon glyphicon-repeat"></i>
-                </button>
-            </div>
-            <div class="btn-group">
-                <button name="6" type="button" class="action btn btn-lg  btn-default">
-                    <i style="font-size: 21px; line-height: 15px;"
-                       class="glyphicon glyphicon glyphicon-volume-up"></i>
-                </button>
-            </div>
-            <div class="btn-group">
-                <button id="NOP" name="0" type="button" class="action btn btn-lg btn-default">
-                    <i class="glyphicon glyphicon-transfer"></i>
-                </button>
-            </div>
-            <!--<div class="btn-group">
-                <button id="CLEAR" type="button" class="btn btn-lg btn-default">
-                    <i class="glyphicon glyphicon-remove-circle"></i>
-                </button>
-            </div>-->
-            <div class="btn-group">
-                <button name="5" type="button" class="action btn btn-lg  btn-default">
-                    <i class="glyphicon glyphicon glyphicon-forward"></i>
-                </button>
+            <div class="float-bottom btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button name="4" type="button" class="action btn btn-lg btn-default">
+                        <span style="font-size: 20px;">D</span>
+                    </button>
+                </div>
+                <div class="btn-group">
+                    <button name="7" type="button" class="action btn btn-lg  btn-default">
+                        <i class="glyphicon glyphicon glyphicon-repeat"></i>
+                    </button>
+                </div>
+                <div class="btn-group">
+                    <button name="6" type="button" class="action btn btn-lg  btn-default">
+                        <i style="font-size: 21px; line-height: 15px;"
+                           class="glyphicon glyphicon glyphicon-volume-up"></i>
+                    </button>
+                </div>
+                <div class="btn-group">
+                    <button id="NOP" name="0" type="button" class="action btn btn-lg btn-default">
+                        <i class="glyphicon glyphicon-transfer"></i>
+                    </button>
+                </div>
+                <!--<div class="btn-group">
+					<button id="CLEAR" type="button" class="btn btn-lg btn-default">
+						<i class="glyphicon glyphicon-remove-circle"></i>
+					</button>
+				</div>-->
+                <div class="btn-group">
+                    <button name="5" type="button" class="action btn btn-lg  btn-default">
+                        <i class="glyphicon glyphicon glyphicon-forward"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
