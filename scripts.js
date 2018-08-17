@@ -158,7 +158,7 @@ $( 'document' ).ready( function() {
 					server_ping = total_ping - firebase_ping;
 				view['ping'] = (server_ping) + 'ms + ' + data['firebase_ping'] + 'ms';
 				view['status'] = '<strong>' + command + '</strong> sent to server...';
-				view['last-message'] = '<span class="action_pill">' + msgSymbols[data['command']] + '</span>&nbsp;<span id=timer>0</span> ';
+				view['last-message'] = '<span class="action_pill">' + msgSymbols[data['command']] + '</span>';
 				timestampSeconds = 0; // Start counter
 
 				let timeOut = setTimeout(function(){
@@ -174,24 +174,27 @@ $( 'document' ).ready( function() {
 					if ( snapshotJson.val() !== null ) {
 						snapshot = snapshotJson.val();
 
+						// Add message pills
 						messageList.append( '<span class="bzzz' + command + '">' + msgSymbols[command] + '</span>' ).on( 'click', 'span', function() {
-							$( this ).animate( { width: 0 }, function() {
-								$( this ).remove();
-							} );
+							$.when( $( this ).remove() ).then(
+								updateProgress()
+							);
 						} );
 						messageList.find( 'span:last-child' ).attr( 'title', timestamp );
-						device_ping = Date.now() - start_time - server_ping;
-
 						signalStrength = snapshot['signal'];
+
 						$( '.signal-strength' ).attr( 'data-bars', signalStrength );
 						$( '.signal-strength' ).attr( 'title', signalStrength );
-						view['signal-strength'] = signalStrength;
 						batteryLevel = snapshot['batteryLevel'];
+						device_ping = Date.now() - start_time - server_ping;
+
+						// Status indicators
+						view['signal-strength'] = signalStrength;
 						view['battery-level'] = batteryLevel + "%";
-
 						view['ping'] = $( '[data-label=ping]' ).html() + ' + ' + device_ping + 'ms';
-						view['status'] = 'Ready';
+						view['status'] = 'Delivered';
 
+						updateProgress();
 						redraw();
 
 						$( '.action' ).blur();
@@ -209,6 +212,7 @@ $( 'document' ).ready( function() {
 	} );
 } );
 
+// Timer function
 setInterval( function() {
 	if ( seconds < 60 )
 		$( '#timer' ).html( seconds + 's ago' );
@@ -217,6 +221,18 @@ setInterval( function() {
 	++seconds;
 }, 1000 );
 
+// Progress indicator
+let progress = 0,
+	segmentLengths = [24, 16, 20],
+	currentSegment = 0;
+
+function updateProgress() {
+	progress = $( '#consoleDiv' ).find( 'span' ).length;
+	$( 'progress' ).attr( 'value', progress );
+	$( 'progress' ).attr( 'max', segmentLengths[currentSegment] );
+}
+
+// On load
 $( window ).on( 'load', function() {
 	database = firebase.database();
 	$( '#CLEAR' ).on( 'click', function() {
@@ -225,10 +241,24 @@ $( window ).on( 'load', function() {
 		} );
 	} );
 
-	// $( '#dropdownMenu1' ).click( function() {
-	// 	$( '.panel-body, .panel-footer, .abc, .float-bottom' ).addClass( 'fadedOut' );
-	// } );
+	$( '#dropdownMenu1' ).click( function() {
+		$( '.panel-body, .panel-footer, .abc, .float-bottom' ).addClass( 'fadedOut' );
+	} );
 
-	$( '#dropdownMenu1' ).click();
+	$( '.segment .btn' ).click( function() {
+		$( '.segment .btn' ).removeClass( 'active' );
+		$( this ).addClass( 'active' );
+		currentSegment = $( this ).index();
+		updateProgress();
+	} );
+
+	updateProgress();
+
+	// Temp for dev
+	setTimeout( function() {
+		$( '.registered-phones li:nth-child(2) a' ).click();
+	}, 500 );
 
 } );
+
+

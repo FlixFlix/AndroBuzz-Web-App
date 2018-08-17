@@ -59,21 +59,40 @@
                     <div class=battery-container><span data-label="battery-level">%</span><div class="battery"><div class="level"></div></div></div>
                 </div>
                 <div class="panel-body">
-                    <table class="info-list">
-                        <tbody>
-                        <tr>
-                            <td>Last message</td>
-                            <td data-label="last-message" data-title="message_id"></td>
-                        </tr>
-                        <tr>
-                            <td>Ping</td>
-                            <td data-label="ping"></td>
-                        </tr>
+                    <div class="info-list">
+                        <div class="info-row">
+                            <div>Last message</div>
+                            <div data-label="last-message" data-title="message_id"></div>
+                            <div id="timer">0s</div>
+                        </div>
+                        <div class="info-row">
+                            <div>Ping</div>
+                            <div data-label="ping"></div>
+                        </div>
+                        <div class="info-row">
+                            <div>Segment</div>
+                            <div class="segment">
+                                <div class="btn-group">
+                                    <button name="basic" type="button" class="btn btn-lg btn-default">
+                                        <span>Basic</span>
+                                    </button>
+                                    <button name="general" type="button" class="btn btn-lg btn-default active">
+                                        <span>General</span>
+                                    </button>
+                                    <button name="general" type="button" class="btn btn-lg btn-default">
+                                        <span>Combo</span>
+                                    </button>
+                                    <button name="general" type="button" class="btn btn-lg btn-default">
+                                        <span>Air</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         </tbody>
-                    </table>
+                    </div>
                 </div>
                 <div class="panel-footer">
-                    <!--                    <div><strong>Status:</strong> <span data-label="status"></span></div>-->
+                    <progress class="current-segment-progress"></progress>
                     <div class="error" data-label="error"></div>
                     <div id="consoleDiv"></div>
                 </div>
@@ -84,37 +103,22 @@
                 <button name="3" type="button" class="action btn btn-block btn-lg btn-disabled">C</button>
             </div>
             <div class="float-bottom btn-group btn-group-justified">
-                <div class="btn-group">
                     <button name="4" type="button" class="action btn btn-lg btn-default">
                         <span style="font-size: 20px;">D</span>
                     </button>
-                </div>
-                <div class="btn-group">
                     <button name="7" type="button" class="action btn btn-lg  btn-default">
                         <i class="glyphicon glyphicon glyphicon-repeat"></i>
                     </button>
-                </div>
-                <div class="btn-group">
                     <button name="6" type="button" class="action btn btn-lg  btn-default">
                         <i style="font-size: 21px; line-height: 15px;"
                            class="glyphicon glyphicon glyphicon-volume-up"></i>
                     </button>
-                </div>
-                <div class="btn-group">
                     <button id="NOP" name="0" type="button" class="action btn btn-lg btn-default">
                         <i class="glyphicon glyphicon-transfer"></i>
                     </button>
-                </div>
-                <!--<div class="btn-group">
-					<button id="CLEAR" type="button" class="btn btn-lg btn-default">
-						<i class="glyphicon glyphicon-remove-circle"></i>
-					</button>
-				</div>-->
-                <div class="btn-group">
                     <button name="5" type="button" class="action btn btn-lg  btn-default">
                         <i class="glyphicon glyphicon glyphicon-forward"></i>
                     </button>
-                </div>
             </div>
         </div>
     </div>
