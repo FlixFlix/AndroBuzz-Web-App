@@ -56,20 +56,34 @@ body {
 	width: 100%;
 }
 
+.error {
+	display: block;
+	unicode-bidi: embed;
+	font-family: monospace;
+	white-space: pre;
+	color: red;
+	overflow-x: auto;
+}
+
 .panel-heading {
 	position: relative;
 	display: flex;
 	align-items: center;
-	padding: 10px;
+	padding: 0 10px;
+	height: 40px;
 
 	.dropdown {
 		float: left;
 		display: flex;
 		color: #333;
 
-		.btn {
+		.btn.dropdown-toggle {
 			margin: 0 !important;
-			padding: 5px 12px;
+			padding: 3px 12px 0px;
+			.caret {
+				margin-left: 4px;
+				transform: scale(1.2);
+			}
 		}
 
 		.dropDownItem {

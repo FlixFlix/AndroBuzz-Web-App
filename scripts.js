@@ -58,8 +58,7 @@ $( 'document' ).ready( function() {
 			url: 'functions.php',
 			data: request,
 			success: function( devices ) {
-				console.log( devices );
-				// here we create the dropdown options
+				// Create the dropdown options
 				let dropdownHTML = '';
 				let totalPhones = devices.length;
 				for ( let i = 0; i < totalPhones; i++ ) {
@@ -93,7 +92,7 @@ $( 'document' ).ready( function() {
 				});
 			},
 			error: function( e ) {
-				redraw( 'status', 'Error retrieving devices\n' + e.responseText );
+				redraw( 'error', 'Error retrieving devices\n<pre>' + e.responseText +'</pre>');
 			}
 		} );
 	}
@@ -149,7 +148,7 @@ $( 'document' ).ready( function() {
 			data: request,
 			success: function( data ) {
 				if ( data['firebase_response']['success'] !== 1 ) {
-					redraw( 'status', 'Firebase error: ' + data['firebase_response']['results'][0]['error'] );
+					redraw( 'error', 'Firebase error:\n' + data['firebase_response']['results'][0]['error'] );
 					console.log( data );
 					return;
 				}
@@ -163,13 +162,13 @@ $( 'document' ).ready( function() {
 
 				let timeOut = setTimeout(function(){
 					dataRef.off();
-					redraw( 'status', 'Timed out. Possibly not delivered.' );
+					redraw( 'status', 'Timed out. Possibly undelivered.' );
 				}, 15000 );
 
 				redraw();
 
 				// Waiting for delivery confirmation
-				let dataRef = database.ref( 'clients/' + client['deviceKey'] + '/messages/' + data['messageDbKey'] );
+				let dataRef = database.ref( client['deviceKey'] + '/messages/' + data['messageDbKey'] );
 				dataRef.on( 'value', function( snapshotJson ) {
 					if ( snapshotJson.val() !== null ) {
 						snapshot = snapshotJson.val();
@@ -205,7 +204,7 @@ $( 'document' ).ready( function() {
 
 			},
 			error: function( e ) {
-				redraw( 'data-status', e.responseText );
+				redraw( 'error', '<pre>'+e.responseText+'</pre>' );
 			}
 		} );
 		return false;
@@ -223,11 +222,11 @@ setInterval( function() {
 
 // Progress indicator
 let progress = 0,
-	segmentLengths = [24, 16, 20],
+	segmentLengths = [24, 24, 16, 20],
 	currentSegment = 0;
 
 function updateProgress() {
-	progress = $( '#consoleDiv' ).find( 'span' ).length;
+	progress = $( '#consoleDiv' ).find( '.bzzz1, .bzzz2, .bzzz3, .bzzz4' ).length;
 	$( 'progress' ).attr( 'value', progress );
 	$( 'progress' ).attr( 'max', segmentLengths[currentSegment] );
 }
@@ -241,10 +240,6 @@ $( window ).on( 'load', function() {
 		} );
 	} );
 
-	$( '#dropdownMenu1' ).click( function() {
-		$( '.panel-body, .panel-footer, .abc, .float-bottom' ).addClass( 'fadedOut' );
-	} );
-
 	$( '.segment .btn' ).click( function() {
 		$( '.segment .btn' ).removeClass( 'active' );
 		$( this ).addClass( 'active' );
@@ -256,7 +251,7 @@ $( window ).on( 'load', function() {
 
 	// Temp for dev
 	setTimeout( function() {
-		$( '.registered-phones li:nth-child(2) a' ).click();
+		// $( '.registered-phones li:nth-child(2) a' ).click();
 	}, 500 );
 
 } );
