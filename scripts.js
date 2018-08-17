@@ -1,6 +1,15 @@
 let msgSymbols = [
 	'⇄', 'A', 'B', 'C', 'D', '➟', '🔊&#xFE0E;', '↺'
 ];
+let database,
+	seconds,
+	deviceKey,
+	client,
+	clientToken,
+	firebase_ping = 1,
+	batteryLevel,
+	signalStrength;
+
 
 function formatPhoneNumber( s ) {
 	if ( s[0] == '1' ) {
@@ -17,9 +26,9 @@ function initFirebaseConfig() {
 	let config = {};
 	switch ( url ) {
 		case 'androbuzz.iredesigned.com/':
-			config.apiKey = "AIzaSyClbcP5VcyQnl93OplUJHsQbAJikiDfJec";
-			config.databaseURL = "https://androbuzz-prod.firebaseio.com/"
-			break;
+			// config.apiKey = "AIzaSyClbcP5VcyQnl93OplUJHsQbAJikiDfJec";
+			// config.databaseURL = "https://androbuzz-prod.firebaseio.com/"
+			// break;
 		case 'androbuzz.iredesigned.com/dev':
 		case 'ab.test/':
 			config.apiKey = "AIzaSyAc286y-5g5WL4vtSgCsmEV_afxYyO_kYM";
@@ -110,17 +119,18 @@ $( 'document' ).ready( function() {
 	$( '.action' ).click( function() {
 		let command = $( this ).attr( 'name' );
 		redraw( 'status', 'Sending message... ' + command );
+		seconds = 0;
 		let currentTime = new Date(),
-			hours = currentTime.getHours(),
-			minutes = currentTime.getMinutes(),
-			seconds = currentTime.getSeconds();
-		if ( minutes < 10 ) {
-			minutes = "0" + minutes;
+			timestampHours = currentTime.getHours(),
+			timestampMinutes = currentTime.getMinutes(),
+			timestampSeconds = currentTime.getSeconds();
+		if ( timestampMinutes < 10 ) {
+			timestampMinutes = "0" + timestampMinutes;
 		}
-		if ( seconds < 10 ) {
-			seconds = "0" + seconds;
+		if ( timestampSeconds < 10 ) {
+			timestampSeconds = "0" + timestampSeconds;
 		}
-		let timestamp = hours + ':' + minutes + ':' + seconds;
+		let timestamp = timestampHours + ':' + timestampMinutes + ':' + timestampSeconds;
 		let start_time = Date.now();
 
 		// Prepare data
@@ -149,7 +159,7 @@ $( 'document' ).ready( function() {
 				view['ping'] = (server_ping) + 'ms + ' + data['firebase_ping'] + 'ms';
 				view['status'] = '<strong>' + command + '</strong> sent. Waiting for delivery confirmation...';
 				view['last-message'] = '<span class="action_pill panel">' + msgSymbols[data['command']] + '</span>&nbsp;<span id=timer>0</span> ';
-				seconds = 0; // Start counter
+				timestampSeconds = 0; // Start counter
 
 				let timeOut = setTimeout(function(){
 					dataRef.off();
@@ -158,6 +168,7 @@ $( 'document' ).ready( function() {
 
 				redraw();
 
+				// Waiting for delivery confirmation
 				let dataRef = database.ref( 'clients/' + client['deviceKey'] + '/messages/' + data['messageDbKey'] );
 				dataRef.on( 'value', function( snapshotJson ) {
 					if ( snapshotJson.val() !== null ) {
@@ -198,7 +209,6 @@ $( 'document' ).ready( function() {
 	} );
 } );
 
-let seconds = 0;
 setInterval( function() {
 	if ( seconds < 60 )
 		$( '#timer' ).html( seconds + 's ago' );
@@ -206,18 +216,6 @@ setInterval( function() {
 		$( '#timer' ).html( Math.floor(seconds / 60) + ' minutes ago' );
 	++seconds;
 }, 1000 );
-
-let database,
-	deviceKey,
-	client,
-	clientId,
-	clientToken,
-	server_ping = 1,
-	firebase_ping = 1,
-	start_time = 1,
-	devices,
-	batteryLevel,
-	signalStrength;
 
 $( window ).on( 'load', function() {
 	database = firebase.database();
