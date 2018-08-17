@@ -62,21 +62,18 @@ function getRegisteredDevices() {
 	require_once __DIR__ . '/firebase.php';
 
 	$firebase = new Firebase();
-	$clientsJson = $firebase->getJson('clients');
+	$clientsJson = $firebase->getJson('');
 	$clients = json_decode($clientsJson, true);
-	$devices = []; // all devices in the database
 	$i = 0;
-//	file_put_contents('log.txt', $clientsJson);
 	foreach($clients as $key => $value){
 		$devices[ $i ] = [
 			"deviceKey" => $key,
-			"regToken"  => (array_key_exists( 'regToken', $value ) ? $value[ 'regToken' ] : "No registration token"),
-			"model"     => $clients[ $key ][ 'model' ],
-			"number"    => $clients[ $key ][ 'number' ],
-			"name"      => $clients[ $key ][ 'name' ],
-			"regDate"   => $clients[ $key ][ 'regDate' ],
-			"brand"     => $clients[ $key ][ 'brand' ],
-			// Please store phone name too: Settings > General > About Phone > Name
+			"regToken"  => (array_key_exists( 'regToken', $value ) ? $value[ 'regToken' ] : "regToken"),
+			"model"     => (array_key_exists( 'model', $value ) ? $value[ 'model' ] : "model"),
+			"number"    => (array_key_exists( 'number', $value ) ? $value[ 'number' ] : "number"),
+			"name"      => (array_key_exists( 'name', $value ) ? $value[ 'name' ] : "name"),
+			"regDate"   => (array_key_exists( 'regDate', $value ) ? $value[ 'regDate' ] : "regDate"),
+			"brand"     => (array_key_exists( 'brand', $value ) ? $value[ 'brand' ] : "brand"),
 		];
 		$i++;
 	}
@@ -88,9 +85,6 @@ function getRegisteredDevices() {
 // This function will be executed when the select element changes
 function getCurrentDevice() {
 	$current_device = [
-		"reg_id" => "dwZ4ktuEVNw:APA91bFNsFR6glr9mnlTvQdR0Tijw2PJfH1zPWpnYdksNdX-91voQy5hEJV5SWmnAvaJ4hOifvrFLYrc0VufLosERB-ZukszxTKMvEHxgYq3Yq6rs0Qk8y10U5Rbged9V6CI8BucqWk4",
-		"model"  => "LGE LG-M150",
-		"number" => "773-555-1234",
 	];
 
 	$return = $current_device;
