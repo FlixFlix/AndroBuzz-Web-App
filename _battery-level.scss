@@ -1,0 +1,57 @@
+$bl-height: 12px;
+$bl-border: 1px;
+$bl-padding: 1px;
+$bl-bar-width: 4px;
+$bl-number-of-bars: 4;
+$bl-bar-spacing: 1px;
+$bl-bar-margins: 0 0 0 0;
+
+.battery-container {
+	float: right;
+	> span {
+		font-size: 12px;
+		line-height: $bl-height;
+		vertical-align: 1px;
+	}
+
+	// Hide this while the phone selection dropdown is active
+	.dropdown + .signal-strength + .panel-title + & {
+		display: none;
+	}
+
+}
+
+.battery {
+	position: relative;
+	width: ($bl-bar-width + $bl-bar-spacing)*$bl-number-of-bars - $bl-bar-spacing + 2*$bl-padding + 2*$bl-border;
+	height: $bl-height;
+	border: $bl-border solid #fff;
+	border-radius: 1px;
+	padding: $bl-padding;
+	margin-left: 8px;
+	display: inline-block;
+
+	// Battery "tip"
+	&:before {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 50%;
+		right: -4px;
+		margin-top: -3px;
+		width: 2px;
+		height: 6px;
+		background: #fff;
+		border-top-right-radius: 2px;
+		border-bottom-right-radius: 2px;
+	}
+	.level {
+		width: 100%;
+		height: 100%;
+		background-image: linear-gradient(to right, #fff $bl-bar-width, #fff $bl-bar-width, transparent $bl-bar-width, transparent 100%);
+		background-size: $bl-bar-width + $bl-bar-spacing, $bl-height;
+		background-repeat: repeat-x;
+	}
+
+}
+

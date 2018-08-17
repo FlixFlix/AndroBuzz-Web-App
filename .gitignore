@@ -4,3 +4,7 @@
 *.map
 
 *.txt
+
+style\.css
+
+\.htaccess

@@ -1,0 +1,49 @@
+$ss-bar-height: 12px;
+$ss-bar-width: 4px;
+$ss-number-of-bars: 4;
+$ss-bar-spacing: 1px;
+$ss-bar-margins: 2px 10px 0 0;
+
+// Cellphone style signal strength indicator bars
+.signal-strength {
+	display: inline-flex;
+	height: $ss-bar-height;
+	width: $ss-bar-width * $ss-number-of-bars + $ss-bar-spacing * ($ss-number-of-bars - 1);
+	margin: $ss-bar-margins;
+	justify-content: space-between;
+	align-items: flex-end;
+	.bar {
+		box-sizing: border-box;
+		display: inline-block;
+		width: $ss-bar-width;
+		border: 1px solid rgba(white, 0.66);
+		background-color: rgba(white, 0.10);
+
+		// Progressively increase bar height
+		@for $i from 2 through $ss-number-of-bars {
+			&.bar-#{$i} {
+				height: percentage($i/$ss-number-of-bars);
+			}
+		}
+
+		// First bar a little taller for an overall faux-exponential look
+		&.bar-1 {
+			height: percentage(1.2/$ss-number-of-bars);
+		}
+	}
+
+	// First n-th bars are solid, where n is declared in a data attribute, e.g. [data-bars = 3]
+	@for $i from 1 through 5 {
+		&[data-bars="#{$i}"] {
+			.bar:nth-child(-n+#{$i}) {
+				background-color: white;
+			}
+		}
+	}
+
+	// Hide this the phone selection dropdown is active
+	.dropdown + & {
+		display: none;
+	}
+}
+

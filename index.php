@@ -45,18 +45,18 @@
                         <ul data-label="registered-phones" class="registered-phones dropdown-menu" aria-labelledby="dropdownMenu1">
                         </ul>
                     </div>
-                    <div class="panel-title" data-title="">
-                        <h3 class="panel-title" data-label="device-name" data-title="client_id"></h3>
-                        <h4 class="panel-title" data-label="make-model"></h4>
-                    </div>
-                    </h3>
-                    <div class="signal-strength _0bars good">
+                    <div class="signal-strength good" data-bars="1">
                         <div class="bar-1 bar"></div>
                         <div class="bar-2 bar"></div>
                         <div class="bar-3 bar"></div>
                         <div class="bar-4 bar"></div>
                     </div>
-                    <!--<div class=batteryContainer><span data-label="battery-level">%</span><div class="battery"><div class="level"></div></div></div>-->
+                    <div class="panel-title" data-title="">
+                        <h3 class="panel-title" data-label="device-name" data-title="make-model"></h3>
+                        <h4 class="panel-title" data-label="make-model"></h4>
+                    </div>
+                    </h3>
+                    <div class=battery-container><span data-label="battery-level">%</span><div class="battery"><div class="level"></div></div></div>
                 </div>
                 <div class="panel-body">
                     <table class="info-list">
