@@ -158,7 +158,7 @@ $( 'document' ).ready( function() {
 					server_ping = total_ping - firebase_ping;
 				view['ping'] = (server_ping) + 'ms + ' + data['firebase_ping'] + 'ms';
 				view['status'] = '<strong>' + command + '</strong> sent to server...';
-				view['last-message'] = '<span class="action_pill panel">' + msgSymbols[data['command']] + '</span>&nbsp;<span id=timer>0</span> ';
+				view['last-message'] = '<span class="action_pill">' + msgSymbols[data['command']] + '</span>&nbsp;<span id=timer>0</span> ';
 				timestampSeconds = 0; // Start counter
 
 				let timeOut = setTimeout(function(){
