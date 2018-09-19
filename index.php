@@ -147,24 +147,24 @@
                 </div>
             </div>
             <div class="abc">
-                <button name="1" type="button" class="action btn btn-block btn-lg btn-disabled">A</button>
-                <button name="2" type="button" class="action btn btn-block btn-lg btn-disabled">B</button>
-                <button name="3" type="button" class="action btn btn-block btn-lg btn-disabled">C</button>
+                <button name="1" data-info="command-1" type="button" class="action btn btn-block btn-lg btn-disabled">A</button>
+                <button name="2" data-info="command-2" type="button" class="action btn btn-block btn-lg btn-disabled">B</button>
+                <button name="3" data-info="command-3" type="button" class="action btn btn-block btn-lg btn-disabled">C</button>
             </div>
             <div class="float-bottom btn-group btn-group-justified">
-                <button name="4" type="button" class="action btn btn-lg btn-default btn-disabled">
+                <button name="4" data-info="command-4" type="button" class="action btn btn-lg btn-default btn-disabled">
                     <span style="font-size: 20px;">D</span>
                 </button>
-                <button name="7" type="button" class="action btn btn-lg  btn-default btn-disabled">
+                <button name="7" data-info="command-7" type="button" class="action btn btn-lg  btn-default btn-disabled">
                     <i class="fas fa-redo-alt"></i>
                 </button>
-                <button name="6" type="button" class="action btn btn-lg  btn-default btn-disabled">
+                <button name="6" data-info="command-6" type="button" class="action btn btn-lg  btn-default btn-disabled">
                     <i class="fas fa-volume-up"></i>
                 </button>
-                <button id="NOP" name="0" type="button" class="action btn btn-lg btn-default btn-disabled">
+                <button name="0" data-info="command-0" type="button" class="action btn btn-lg btn-default btn-disabled">
                     <i class="fas fa-exchange-alt"></i>
                 </button>
-                <button name="5" type="button" class="action btn btn-lg btn-default btn-disabled">
+                <button name="5" data-info="command-5" type="button" class="action btn btn-lg btn-default btn-disabled">
                     <i class="fas fa-forward"></i></i>
                 </button>
             </div>

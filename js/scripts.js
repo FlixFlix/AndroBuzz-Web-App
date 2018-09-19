@@ -5,12 +5,15 @@ let msgSymbols = [
 	'<i class="fas fa-volume-up"></i>',
 	'<i class="fas fa-redo-alt"></i>'
 ];
+let //symbolSending = '<i class="fas fa-hourglass fa-spin"></i>',
+	symbolSending = '<span class=loader></span>',
+	symbolSent = '<i class="fas fa-check pause-vanish"></i>',
+	symbolError = '<i class="fas fa-exclamation-triangle pause-vanish"></i>';
 let database,
 	seconds,
 	start_time,
 	timestamp,
 	client,
-	clientToken,
 	firebase_ping = 1,
 	batteryLevel,
 	signal,
@@ -24,7 +27,7 @@ let database,
 	$statusConsolePositioner,
 	pillWidth,
 	progress = 0,
-	segmentLength = [24, 24, 16, 20],
+	segmentLengths = [24, 24, 16, 20],
 	currentSegment = 0;
 
 function formatPhoneNumber( s ) {
@@ -48,10 +51,12 @@ function initFirebaseConfig() {
 		case 'androbuzz.iredesigned.com/dev':
 		case 'ab.test/':
 			config.apiKey = "AIzaSyAc286y-5g5WL4vtSgCsmEV_afxYyO_kYM";
-			config.databaseURL = "https://androbuzz-dev.firebaseio.com/"
+			config.databaseURL = "https://androbuzz-dev.firebaseio.com/";
 			break;
 		default:
 			alert( 'Unknown host!' );
+			config.apiKey = "AIzaSyAc286y-5g5WL4vtSgCsmEV_afxYyO_kYM";
+			config.databaseURL = "https://androbuzz-dev.firebaseio.com/";
 	}
 	return config;
 }
@@ -65,10 +70,7 @@ function initializeVars() {
 	pillWidth = ($statusConsole.width() + 4) / 10;
 }
 
-firebase.initializeApp( initFirebaseConfig() );
-
-initializeVars();
-
+// Retrieve registered devices from database
 function getPhones() {
 	let request = {
 		'action': 'getRegisteredDevices',
@@ -88,25 +90,18 @@ function getPhones() {
 			} );
 			// Create the dropdown options
 			let dropdownHTML = '';
-			/*
-						for ( let i = 0; i < totalPhones; i++ ) {
-							console.log( deviceArray[i]['name'] + ": " + deviceArray[i]['deactivated'] );
-							if ( !deviceArray[i]['deactivated'] ) {
-								dropdownHTML += '<li><a title="Registered on ' + deviceArray[i]['regDate'] + '\nRegistration token: ' + deviceArray[i]['regToken'] + '" class="dropDownItem"' + 'data-token="' + deviceArray[i]['regToken'] + '"' + 'href="javascript:void(0);">' +
-									'<span class="dropdownName">' + deviceArray[i]['name'] + '</span>' +
-									'<span class="dropdownNumber"><span>' + deviceArray[i]['brand'] + ' ' + deviceArray[i]['model'] + '</span>' + formatPhoneNumber( deviceArray[i]['number'] ) + '</span>' +
-									'</a></li>' +
-									'<li class="divider"></li>';
-							}
-						}
-			*/
 			devices.forEach( function( device ) {
-				console.log(device['deactivated']);
 				if (device['deactivated'] !== "true") {
-					dropdownHTML += '<li><a title="Registered on ' + device['regDate'] + '\nRegistration token: ' + device['regToken'] + '" class="dropDownItem"' + 'data-token="' + device['regToken'] + '"' + 'href="javascript:void(0);">' +
+					dropdownHTML += '<li>' +
+						'<a title="Registered on ' + device['regDate'] + '\nRegistration token: ' + device['regToken']
+						+ '" class="dropDownItem"'
+						+ 'data-token="' + device['regToken'] + '"'
+						+ 'data-deviceKey="' + device['deviceKey'] + '"'
+						+ 'href="javascript:void(0);">' +
 						'<span class="dropdownName">' + device['name'] + '</span>' +
 						'<span class="dropdownNumber"><span>' + device['brand'] + ' ' + device['model'] + '</span>' + formatPhoneNumber( device['number'] ) + '</span>' +
-						'</a></li>' +
+						'</a>' +
+						'</li>' +
 						'<li class="divider"></li>';
 				}
 
@@ -121,28 +116,15 @@ function getPhones() {
 
 			// Bind phone change event
 			$( '.dropDownItem' ).click( function() {
-				let regToken = $( this ).attr( 'data-token' );
-				devices.forEach( function( device ) {
-					if ( device['regToken'] === regToken ) {
-						client = device;
-						clientToken = regToken;
-					}
-				} );
-				/*
-								for ( let i = 0; i < deviceArray.length; i++ ) {
-									if ( deviceArray[i]['regToken'] === regToken ) {
-										client = deviceArray[i];
-										clientToken = regToken;
-									}
-								}
-				*/
+				client = devicesObject[$( this ).attr( 'data-deviceKey' )];
+				initDeviceListener();
 
 				view['device-name'] = client['name'];
 				view['device-details'] = client['brand'] + ' ' + client['model'];
 				view['carrier'] = client['carrier'];
 				redraw();
 
-				$( '#NOP' ).click();
+				$( '[name="0"]' ).click();
 				$( '.panel-heading > .dropdown' ).hide();
 				$( '.btn-disabled' ).removeClass( 'btn-disabled' );
 				$( '.abc button' ).addClass( 'btn-primary' );
@@ -157,8 +139,6 @@ function getPhones() {
 		}
 	} );
 }
-
-getPhones();
 
 function handleFirebaseResponse( data ) {
 	if ( data['firebase_response']['success'] !== 1 ) {
@@ -179,6 +159,7 @@ function handleFirebaseResponse( data ) {
 	let timeOut = setTimeout( function() {
 		dataRef.off();
 		redraw( 'status', 'Possibly undelivered.' );
+		redraw( 'command-' + command, msgSymbols[command] + symbolError );
 	}, 25000 );
 
 	redraw();
@@ -230,6 +211,8 @@ function handleFirebaseResponse( data ) {
 			redraw();
 
 			$( '.action' ).blur();
+			redraw( 'command-' + command, msgSymbols[command] + symbolSent );
+
 			clearTimeout( timeOut );
 			dataRef.off();
 		}
@@ -237,10 +220,13 @@ function handleFirebaseResponse( data ) {
 
 }
 
+// Execute command: send to server
 function actionCommand( el ) {
 	let command = el.attr( 'name' );
 	redraw( 'status', 'Sending message... ' + command );
 	redraw( 'error', '' );
+	$('.pause-vanish').remove();
+	redraw( 'command-' + command, symbolSending );
 	seconds = 0;
 	let currentTime = new Date(),
 		timestampOffsetHours = Math.floor( currentTime.getTimezoneOffset() / 60 ).toString(),
@@ -248,13 +234,13 @@ function actionCommand( el ) {
 		timestampOffsetString = "-" + timestampOffsetHours.padStart( 2, "0" ) + timestampOffsetMinutes.padStart( 2, "0" );
 	;
 
-	timestamp = $.format.date( currentTime, "yyyy-MM-dd HH:mm:ss.SSS" ),
-		start_time = Date.now();
+	timestamp = $.format.date( currentTime, "yyyy-MM-dd HH:mm:ss.SSS" );
+	start_time = Date.now();
 
 	// Prepare data
 	let json = {
 		'command': command,
-		'clientId': clientToken,
+		'clientId': client['regToken'],
 		'timeStamp': timestamp + timestampOffsetString
 	};
 	let request = {
@@ -279,6 +265,7 @@ function actionCommand( el ) {
 	return false;
 }
 
+// Update fields
 function redraw( field, value ) {
 	let windowHeight = $( window ).height();
 	$mainView = $( '#main-view' );
@@ -304,7 +291,7 @@ function redraw( field, value ) {
 	}
 }
 
-// Adding a command to history
+// Add and remove commands to history
 function addPill( command, timestamp ) {
 	let symbol = msgSymbols[command];
 	if ( symbol == null ) symbol = command;
@@ -317,8 +304,6 @@ function addPill( command, timestamp ) {
 	$( '.action_pill' ).css( 'width', pillWidth );
 	updateProgress();
 }
-
-// Remove pill
 function removePill( $pill ) {
 	if ( $pill === "skipping" ) {
 		// We're removing the last TWO commands
@@ -336,8 +321,6 @@ function removePill( $pill ) {
 		} );
 	}
 }
-
-// Shift history bar
 function scrollHistory() {
 	let numberOfCommands = $statusConsole.find( '.buzz' ).length;
 	let positionerPosition = -4;
@@ -356,13 +339,13 @@ setInterval( function() {
 	++seconds;
 }, 1000 );
 
-// Update progress indicator
+// Update progress bar
 function updateProgress() {
 	progress = $( '#console' ).find( '[data-command=1],[data-command=2],[data-command=3],[data-command=4]' ).length;
 	$( 'progress' ).attr( 'value', progress );
-	$( 'progress' ).attr( 'max', segmentLength[currentSegment] );
-	$( '.progress-info' ).css( { 'right': $( 'progress' ).width() * (Math.max( segmentLength[currentSegment] - progress, 0 )) / segmentLength[currentSegment] + 'px' } );
-	redraw( "progress-info", progress + "/" + segmentLength[currentSegment] );
+	$( 'progress' ).attr( 'max', segmentLengths[currentSegment] );
+	$( '.progress-info' ).css( { 'right': $( 'progress' ).width() * (Math.max( segmentLengths[currentSegment] - progress, 0 )) / segmentLengths[currentSegment] + 'px' } );
+	redraw( "progress-info", progress + "/" + segmentLengths[currentSegment] );
 }
 
 // Ping chart graph using chartist.js
@@ -394,7 +377,6 @@ let chart,
 		chartPadding: 0,
 		low: 0
 	};
-
 function initChart() {
 	chart = new Chartist.Line( '.ct-chart', chartData, chartOptions );
 	chart.on( 'draw', function( context ) {
@@ -408,7 +390,6 @@ function initChart() {
 		}
 	} );
 }
-
 function updateChart( pingSet ) {
 	for ( let i = 0; i <= 2; i++ ) {
 		chartData.series[i].push( parseInt( pingSet[i] ) );
@@ -461,12 +442,28 @@ function bindButtonFunctions() {
 	} );
 }
 
-// On load
-$( window ).on( 'load', function() {
+// Message listener for device-initiated communications
+function initDeviceListener() {
+
+}
+
+function deviceListener() {
+
+}
+
+// On ready
+$( document ).ready( function() {
+	firebase.initializeApp( initFirebaseConfig() );
 	database = firebase.database();
+	initializeVars();
+	getPhones();
 	bindButtonFunctions();
 	updateProgress();
 	initChart();
+} );
+
+// On load
+$( window ).on( 'load', function() {
 
 	// Temp for dev
 	setTimeout( function() {
