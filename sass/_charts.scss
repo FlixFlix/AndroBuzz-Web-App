@@ -1,0 +1,42 @@
+.info-row {
+	position: relative;
+	.ct-chart {
+		position: absolute;
+		left: -10px;
+		right: -10px;
+		bottom: 0;
+		top: 0;
+		margin: 0;
+		width: calc(100% + 20px);
+		svg {
+			width: 100%;
+		}
+	}
+}
+
+.ct-area {
+	fill-opacity: .25;
+}
+
+.ct-series-a {
+	.ct-line, .ct-point, .ct-area {
+		//stroke: #333;
+		fill: #192158;
+	}
+}
+
+
+.ct-series-b {
+	.ct-line, .ct-point, .ct-area {
+		//stroke: #666;
+		fill: #a400e2;
+	}
+}
+
+.ct-series-c {
+	.ct-line, .ct-point, .ct-area {
+		//stroke: #999;
+		fill: #8ab4f8;
+	}
+}
+

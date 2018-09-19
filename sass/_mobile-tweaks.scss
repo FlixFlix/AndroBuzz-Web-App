@@ -1,0 +1,29 @@
+@media (max-width: 600px) {
+
+	body {
+		background: none;
+	}
+
+	#main-wrapper, #main-view {
+		padding: 0;
+	}
+
+	.btn-group, .abc {
+		> .btn {
+			border-radius: 0;
+			&.btn-primary {
+				border: none;
+			}
+		}
+	}
+
+	.panel-primary {
+		border: none;
+		border-radius: 0;
+		.panel-heading {
+			border: none;
+			border-radius: 0;
+		}
+	}
+
+}

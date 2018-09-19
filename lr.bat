@@ -1,0 +1,1 @@
+livereload "*.css, *.js, *.php"

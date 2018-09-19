@@ -88,6 +88,10 @@ class Firebase {
 
         return $result;
     }
+
+	public function getDevices() {
+		return self::getJson( '' ); // root of db
+	}
 }
 
 ?>

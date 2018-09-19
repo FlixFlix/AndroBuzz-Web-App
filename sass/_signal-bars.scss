@@ -1,8 +1,8 @@
-$ss-bar-height: 12px;
+$ss-bar-height: 20px;
 $ss-bar-width: 4px;
 $ss-number-of-bars: 4;
 $ss-bar-spacing: 1px;
-$ss-bar-margins: -2px 6px 0 0;
+$ss-bar-margins: 5px 6px 0 0;
 
 // Cellphone style signal strength indicator bars
 .signal-strength {
@@ -36,14 +36,39 @@ $ss-bar-margins: -2px 6px 0 0;
 	@for $i from 1 through 5 {
 		&[data-bars="#{$i}"] {
 			.bar:nth-child(-n+#{$i}) {
-				background-color: white;
+				background-color: lime;
 			}
 		}
 	}
 
-	// Hide this the phone selection dropdown is active
-	.dropdown + & {
-		display: none;
+	&[data-bars="1"] .bar-1 {
+		background-color: red !important;
 	}
-}
 
+	&[data-bars="2"] .bar-1, &[data-bars="2"] .bar-2 {
+		background-color: yellow !important;
+	}
+
+}
+.signal-container {
+	position: relative;
+}
+[data-info="signal-dbm"] {
+	text-transform: none;
+}
+.signal-dbm {
+	//font-family: monospace;
+	white-space: nowrap;
+	font-size: 9px !important;
+	line-height: 1;
+	position: absolute;
+	bottom: -5px;
+	//left: -4px;
+}
+.signal-type {
+	font-size: 0.5em;
+	line-height: 1;
+	bottom: -5px;
+	position: absolute;
+	text-transform: uppercase;
+}

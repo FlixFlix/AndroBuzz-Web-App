@@ -1,0 +1,30 @@
+.bluetooth-container {
+	margin-right: 15px;
+	i {
+		color: white;
+		font-size: 20px;
+	}
+	i[title="disconnected"] {
+		opacity: 0.2;
+	}
+	i[title="notgood"] {
+		color: red;
+	}
+	i[data-title="call-active"] {
+		opacity: 0.2;
+		margin-right: 5px;
+		&[title="true"] {
+			opacity: 1;
+		}
+	}
+	> * {
+		display: inline-block;
+	}
+}
+
+.bluetooth-name {
+	margin-left: 3px;
+	font-size: 9px;
+	vertical-align: 4px;
+	text-transform: uppercase;
+}

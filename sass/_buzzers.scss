@@ -1,0 +1,74 @@
+.buzz1 {
+	animation: buzz cubic-bezier(1, 0, 0, 1) 1200ms 1;
+}
+
+.buzz2 {
+	animation: buzz cubic-bezier(1, 0, 0, 1) 1200ms 2;
+}
+
+.buzz3 {
+	animation: buzz cubic-bezier(1, 0, 0, 1) 1200ms 3;
+}
+
+.buzz4 {
+	animation: buzz cubic-bezier(1, 0, 0, 1) 1200ms 4;
+}
+
+.buzz5 {
+	animation: buzz cubic-bezier(1, 0, 0, 1) 198ms 8;
+}
+
+.buzz6 {
+	animation: longBuzz linear 5ms 800;
+}
+
+@keyframes longBuzz {
+	0% {
+		transform: translateX(0);
+	}
+
+	24% {
+		transform: translateX(0);
+	}
+
+	25% {
+		transform: translateX(-1px);
+	}
+
+	74% {
+		transform: translateX(-1px);
+	}
+
+	75% {
+		transform: translateX(1px);
+	}
+
+	99% {
+		transform: translateX(1px);
+	}
+}
+
+@keyframes buzz {
+	$lt-steps: 200;
+	$lt-step: 100 / $lt-steps;
+	$i: 0;
+	$is-odd: true !default;
+	@while $i < 32.5 {
+		$i: $i + $lt-step;
+		@if $is-odd {
+			#{$i}% {
+				transform: translateX(1.5px);
+			}
+			$is-odd: false;
+		}
+		@else {
+			#{$i}% {
+				transform: translateX(-1.5px);
+			}
+			$is-odd: true;
+		}
+	}
+	0%, 33%, 100% {
+		transform: translateX(0);
+	}
+}

@@ -7,21 +7,22 @@
  */
 require_once __DIR__ . '/config.php';
 
-function send_to_device( $messageDbKey, $command, $clientId ) {
+function sendToDevice( $messageDbKey, $command, $clientId, $timestamp ) {
 
 
 	$regId = $clientId;
 
 	require_once __DIR__ . '/firebase.php';
-	require_once __DIR__ . '/push.php';
+	require_once __DIR__ . '/messageModel.php';
 
 	$firebase = new Firebase();
-	$push     = new Push();
+	$push     = new MessageModel();
 
 	$command = isset( $command ) ? $command : '';
 
 	$push->setCommand( $command );
 	$push->setMessageDbKey( $messageDbKey );
+	$push->setTimeStamp( $timestamp );
 
 	$json     = $push->getPush();
 
@@ -34,15 +35,10 @@ function androbuzz() {
 	$encoded_message = $post_data[ 'command' ];
 	$message         = json_decode( $encoded_message );
 	$start_time      = microtime( TRUE );
-	$precise_time    = DateTime::createFromFormat( 'U.u', microtime( TRUE ) );
-	$messageDbKey    = substr(
-		$precise_time->setTimeZone( new DateTimeZone( 'America/Chicago' ) )
-		             ->format( 'Y-m-d/H:i:s-u' ),
-		0,
-		- 3
-	);
-
-	$firebase_response = send_to_device( $messageDbKey, $message->command, $message->clientId );
+	$messageDbKey    = str_replace( " ", "/", substr( $message->timeStamp, 0, 10 ) ) . "/" . str_replace( ".", "-", substr( $message->timeStamp, 11, 12 ) );
+//	file_put_contents( 'log.txt', "messageDbKey " . $messageDbKey . PHP_EOL, FILE_APPEND );
+//	file_put_contents( 'log.txt', 'Full Request: ' . PHP_EOL . json_encode( $post_data, JSON_PRETTY_PRINT ) . PHP_EOL . PHP_EOL, FILE_APPEND );
+	$firebase_response = sendToDevice( $messageDbKey, $message->command, $message->clientId, $message->timeStamp );
 
 	$response                        = [];
 	$response[ 'firebase_response' ] = $firebase_response;
@@ -52,8 +48,8 @@ function androbuzz() {
 	$response[ 'command' ]       = $message->command;
 	$response[ 'clientId' ]      = $message->clientId;
 	$response[ 'messageDbKey' ]  = $messageDbKey;
-	file_put_contents( 'log.txt', "send_to_device(): " . gettype( $response ) . PHP_EOL, FILE_APPEND );
-	file_put_contents( 'log.txt', 'send_to_device() response: ' . PHP_EOL . json_encode( $response, JSON_PRETTY_PRINT ) . PHP_EOL . PHP_EOL, FILE_APPEND );
+//	file_put_contents( 'log.txt', "send_to_device(): " . gettype( $response ) . PHP_EOL, FILE_APPEND );
+//	file_put_contents( 'log.txt', 'send_to_device() response: ' . PHP_EOL . json_encode( $response, JSON_PRETTY_PRINT ) . PHP_EOL . PHP_EOL, FILE_APPEND );
 	echo json_encode( $response );
 }
 
@@ -63,20 +59,27 @@ function getRegisteredDevices() {
 
 	$firebase = new Firebase();
 	$clientsJson = $firebase->getJson('');
-	$clients = json_decode($clientsJson, true);
+	$devices = json_decode($clientsJson, true);
 	$i = 0;
-	foreach($clients as $key => $value){
-		$devices[ $i ] = [
-			"deviceKey" => $key,
-			"regToken"  => (array_key_exists( 'regToken', $value ) ? $value[ 'regToken' ] : "regToken"),
-			"model"     => (array_key_exists( 'model', $value ) ? $value[ 'model' ] : "model"),
-			"number"    => (array_key_exists( 'number', $value ) ? $value[ 'number' ] : "number"),
-			"name"      => (array_key_exists( 'name', $value ) ? $value[ 'name' ] : "name"),
-			"regDate"   => (array_key_exists( 'regDate', $value ) ? $value[ 'regDate' ] : "regDate"),
-			"brand"     => (array_key_exists( 'brand', $value ) ? $value[ 'brand' ] : "brand"),
-		];
-		$i++;
-	}
+//	foreach($devices as $key=>$device) {unset($device['messages']);}
+//	foreach($devices as $key => $device){
+//		file_put_contents( 'log.txt', implode(',',array_keys($device)) . PHP_EOL, FILE_APPEND );
+//		foreach(array_keys($device) as $aaaa => $sjkhdjk){
+//
+//		}
+//		$devices[ $i ] = [
+//			"deviceKey"   => $key,
+//			"regToken"    => (array_key_exists( 'regToken', $device ) ? $device[ 'regToken' ] : "regToken"),
+//			"model"       => (array_key_exists( 'model', $device ) ? $device[ 'model' ] : "model"),
+//			"number"      => (array_key_exists( 'number', $device ) ? $device[ 'number' ] : "number"),
+//			"name"        => (array_key_exists( 'name', $device ) ? $device[ 'name' ] : "name"),
+//			"regDate"     => (array_key_exists( 'regDate', $device ) ? $device[ 'regDate' ] : "regDate"),
+//			"brand"       => (array_key_exists( 'brand', $device ) ? $device[ 'brand' ] : "brand"),
+//			"carrier"     => ( array_key_exists( 'carrier', $device ) ? $device[ 'carrier' ] : "carrier" ),
+//			"deactivated" => ( array_key_exists( 'deactivated', $device ) ? $device[ 'deactivated' ] : "" ),
+//		];
+//		$i++;
+//	}
 	$return = $devices;
 
 	echo json_encode( $return );

@@ -1,25 +1,22 @@
 $bl-height: 12px;
 $bl-border: 1px;
 $bl-padding: 1px;
-$bl-bar-width: 4px;
-$bl-number-of-bars: 4;
+$bl-bar-width: 2px;
+$bl-number-of-bars: 8;
 $bl-bar-spacing: 1px;
 $bl-bar-margins: 0 0 0 0;
 
 .battery-container {
 	float: right;
-	> span {
-		font-size: 12px;
-		line-height: $bl-height;
-		vertical-align: 1px;
-	}
-
-	// Hide this while the phone selection dropdown is active
-	.dropdown + .signal-strength + .panel-title + & {
-		display: none;
-	}
-
 }
+
+.battery__percentage {
+	font-size: 12px;
+	line-height: $bl-height;
+	vertical-align: 1px;
+	display: none;
+}
+
 
 .battery {
 	position: relative;
@@ -28,7 +25,7 @@ $bl-bar-margins: 0 0 0 0;
 	border: $bl-border solid #fff;
 	border-radius: 1px;
 	padding: $bl-padding;
-	margin-left: 8px;
+	margin-left: 2px;
 	display: inline-block;
 
 	// Battery "tip"
