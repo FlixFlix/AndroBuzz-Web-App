@@ -16,9 +16,10 @@
     <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
-    <link rel="stylesheet" href="style.css?v=816327">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
           integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style.css?v=<?php echo filemtime(__DIR__.'/style.css')?>">
 
     <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
     <link rel="shortcut icon" href="icons/favicon.ico">
@@ -170,6 +171,6 @@
         </div>
     </div>
 </div>
-<script src="js/scripts.js"></script>
+<script src="js/scripts.js?v=<?php echo filemtime(__DIR__.'/js/scripts.js')?>"></script>
 </body>
 </html>
