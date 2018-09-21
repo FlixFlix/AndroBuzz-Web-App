@@ -96,8 +96,6 @@
   .bluetooth-container i {
     color: white;
     font-size: 20px; }
-  .bluetooth-container i[title="disconnected"] {
-    opacity: 0.2; }
   .bluetooth-container i[title="notgood"] {
     color: red; }
   .bluetooth-container i[data-title="call-active"] {
@@ -107,6 +105,14 @@
       opacity: 1; }
   .bluetooth-container > * {
     display: inline-block; }
+  .bluetooth-container .icon-delivered {
+    display: none; }
+  .bluetooth-container a {
+    cursor: pointer; }
+  .bluetooth-container i[title="true"] + a[title="disconnected"] i {
+    color: red; }
+  .bluetooth-container i[title="false"] + a[title="disconnected"] i {
+    opacity: 0.2; }
 
 .bluetooth-name {
   margin-left: 3px;
@@ -595,7 +601,7 @@ progress[value] {
   padding-left: 10px;
   padding-right: 10px; }
 
-.pause-vanish {
+.icon-delivered {
   display: none;
   width: 20px;
   margin-right: -20px;
@@ -641,7 +647,7 @@ progress[value] {
   color: #337ab7; }
 .body-fullscreen .abc button:nth-child(2) {
   background: #33b772; }
-.body-fullscreen .pause-vanish {
+.body-fullscreen .icon-delivered {
   display: inline-block; }
 
 /*# sourceMappingURL=style.css.map */

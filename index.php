@@ -81,8 +81,11 @@
                     </h3>
                     <div class=bluetooth-container>
                         <i title="notoncall" data-title="call-active" class="fas fa-phone"></i>
-                        <i title="disconnected" data-title="bluetooth-icon" class="fab fa-bluetooth-b"></i>
-                        <span class="bluetooth-name" data-info="bluetooth-name">bluetooth</span>
+                        <a class="action bluetooth-icon" name="9" data-info="command-9" title="disconnected"
+                           data-title="bluetooth-icon">
+                            <i class="action fab fa-bluetooth"></i>
+                        </a>
+                        <!--                        <span class="bluetooth-name" data-info="bluetooth-name">bluetooth</span>-->
                     </div>
                     <div class=battery-container data-title="battery-level">
                         <span class="battery__percentage" data-info="battery-level">0%</span>

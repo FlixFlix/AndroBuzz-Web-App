@@ -3,12 +3,14 @@ let msgSymbols = [
 	'A', 'B', 'C', 'D',
 	'<i class="fas fa-forward"></i>',
 	'<i class="fas fa-volume-up"></i>',
-	'<i class="fas fa-redo-alt"></i>'
+	'<i class="fas fa-redo-alt"></i>',
+	'8',
+	'<i title="disconnected" data-title="bluetooth-icon" class="fab fa-bluetooth"></i>',
 ];
 let //symbolSending = '<i class="fas fa-hourglass fa-spin"></i>',
 	symbolSending = '<span class=loader></span>',
-	symbolSent = '<i class="fas fa-check pause-vanish"></i>',
-	symbolError = '<i class="fas fa-exclamation-triangle pause-vanish"></i>';
+	symbolSent = '<i class="fas fa-check icon-delivered"></i>',
+	symbolError = '<i class="fas fa-exclamation-triangle icon-delivered"></i>';
 let database,
 	seconds,
 	start_time,
@@ -225,7 +227,7 @@ function actionCommand( el ) {
 	let command = el.attr( 'name' );
 	redraw( 'status', 'Sending message... ' + command );
 	redraw( 'error', '' );
-	$('.pause-vanish').remove();
+	$('.icon-delivered').remove();
 	redraw( 'command-' + command, symbolSending );
 	seconds = 0;
 	let currentTime = new Date(),
@@ -274,10 +276,10 @@ function redraw( field, value ) {
 		$( '.abc' ).css( 'height', windowHeight );
 		$mainView.css( 'height', 'auto' );
 		// $( '.abc' ).scrollTop( 0 );
-		$( 'html, body' ).animate( { scrollTop: $( '.abc' ).offset().top }, 'slow' );
+		$( 'html, body' ).animate( { scrollTop: $( '.abc' ).offset().top }, 'fast' );
 	} else {
 		$mainView.css( 'height', windowHeight + 'px' );
-		$( 'html, body' ).animate( { scrollTop: 0 }, 'slow' );
+		$( 'html, body' ).animate( { scrollTop: 0 }, 'fast' );
 	}
 	if ( field === undefined || value === undefined ) {
 		$mainView.find( '[data-info]' ).each( function() {

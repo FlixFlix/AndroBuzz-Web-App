@@ -4,9 +4,6 @@
 		color: white;
 		font-size: 20px;
 	}
-	i[title="disconnected"] {
-		opacity: 0.2;
-	}
 	i[title="notgood"] {
 		color: red;
 	}
@@ -19,6 +16,18 @@
 	}
 	> * {
 		display: inline-block;
+	}
+	.icon-delivered {
+		display: none;
+	}
+	a {
+		cursor: pointer;
+	}
+	i[title="true"] + a[title="disconnected"] i { // in a call (true) and Bluetooth is disconnected (critical)
+		color: red
+	}
+	i[title="false"] + a[title="disconnected"] i { // Not in a call with BT disconnected (no big deal)
+		opacity: 0.2;
 	}
 }
 
