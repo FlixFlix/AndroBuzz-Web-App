@@ -1,4 +1,4 @@
-$bl-height: 12px;
+$bl-height: 13px;
 $bl-border: 1px;
 $bl-padding: 1px;
 $bl-bar-width: 2px;
@@ -7,7 +7,7 @@ $bl-bar-spacing: 1px;
 $bl-bar-margins: 0 0 0 0;
 
 .battery-container {
-	float: right;
+	line-height: 1px;
 }
 
 .battery__percentage {
@@ -37,7 +37,7 @@ $bl-bar-margins: 0 0 0 0;
 		right: -4px;
 		margin-top: -3px;
 		width: 2px;
-		height: 6px;
+		height: 5px;
 		background: #fff;
 		border-top-right-radius: 2px;
 		border-bottom-right-radius: 2px;
@@ -46,8 +46,8 @@ $bl-bar-margins: 0 0 0 0;
 		width: 100%;
 		height: 100%;
 		background-image: linear-gradient(to right, #fff $bl-bar-width, #fff $bl-bar-width, transparent $bl-bar-width, transparent 100%);
-		background-size: $bl-bar-width + $bl-bar-spacing, $bl-height;
-		background-repeat: repeat-x;
+		background-size: $bl-bar-width + $bl-bar-spacing, $bl-height - 2*$bl-border - 2*$bl-padding;
+		background-repeat: repeat;
 	}
 
 }
