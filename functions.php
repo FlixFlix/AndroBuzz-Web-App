@@ -7,7 +7,9 @@
  */
 require_once __DIR__ . '/config.php';
 
-function sendToDevice( $messageDbKey, $command, $clientId, $timestamp ) {
+function loge( $text ) {
+	file_put_contents( 'log.txt', date( "Y/m/d H:m:s" ) . ' ' . (string) $text . PHP_EOL, FILE_APPEND );
+}
 
 
 	$regId = $clientId;
