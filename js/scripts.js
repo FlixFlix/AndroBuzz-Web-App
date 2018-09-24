@@ -48,17 +48,17 @@ function initFirebaseConfig() {
 	switch ( url ) {
 		case 'androbuzz.iredesigned.com/':
 			// config.apiKey = "AIzaSyClbcP5VcyQnl93OplUJHsQbAJikiDfJec";
-			// config.databaseURL = "https://androbuzz-prod.firebaseio.com/"
+			// config.databaseURL = "https://androbuzz-prod.firebaseio.com/" // PROD
 			// break;
 		case 'androbuzz.iredesigned.com/dev':
 		case 'ab.test/':
 			config.apiKey = "AIzaSyAc286y-5g5WL4vtSgCsmEV_afxYyO_kYM";
-			config.databaseURL = "https://androbuzz-dev.firebaseio.com/";
+			config.databaseURL = "https://androbuzz-dev.firebaseio.com/"; // DEV
 			break;
 		default:
-			alert( 'Unknown host!' );
+			// alert( 'Unknown host!' );
 			config.apiKey = "AIzaSyAc286y-5g5WL4vtSgCsmEV_afxYyO_kYM";
-			config.databaseURL = "https://androbuzz-dev.firebaseio.com/";
+			config.databaseURL = "https://androbuzz-dev.firebaseio.com/"; // DEV
 	}
 	return config;
 }
