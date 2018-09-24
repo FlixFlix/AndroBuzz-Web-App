@@ -43,7 +43,7 @@ class Firebase {
         $result = curl_exec($ch);
 
 	    if ($result === FALSE) {
-        	file_put_contents('error_log.txt', PHP_EOL . date('F j, Y, g:i:s a').' CURL error: '.curl_error($ch), FILE_APPEND);
+        	file_put_contents('log.txt', PHP_EOL . date('F j, Y, g:i:s a').' CURL error: '.curl_error($ch), FILE_APPEND);
             die('Curl failed: ' . curl_error($ch));
         }
 

@@ -83,13 +83,13 @@ function getPhones() {
 		url: 'functions.php',
 		data: request,
 		success: function( devicesObject ) {
-			let deviceKeys = Object.keys( devicesObject );
+
 			// Convert object to associative array
 			let devices = Object.keys( devicesObject ).map( function( key ) {
 				let singleDevice = devicesObject[key];
-				singleDevice['deviceKey'] = key;
 				return singleDevice;
 			} );
+
 			// Create the dropdown options
 			let dropdownHTML = '';
 			devices.forEach( function( device ) {
