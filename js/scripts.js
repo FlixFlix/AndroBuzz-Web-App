@@ -1,9 +1,9 @@
 let msgSymbols = [
-	'<i class="fas fa-exchange-alt"></i>',
+	'<i class="fal fa-exchange"></i>',
 	'A', 'B', 'C', 'D',
-	'<i class="fas fa-forward"></i>',
-	'<i class="fas fa-volume-up"></i>',
-	'<i class="fas fa-redo-alt"></i>',
+	'<i class="fal fa-forward"></i>',
+	'<i class="fal fa-volume-up"></i>',
+	'<i class="fal fa-sync"></i>',
 	'8',
 	'<i title="disconnected" data-title="bluetooth-icon" class="fab fa-bluetooth"></i>',
 ];

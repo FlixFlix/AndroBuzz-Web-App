@@ -16,9 +16,6 @@
     <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
-          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-
     <link rel="stylesheet" href="style.css?v=<?php echo filemtime(__DIR__.'/style.css')?>">
 
     <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
@@ -34,7 +31,6 @@
     <script src="https://www.gstatic.com/firebasejs/5.4.1/firebase-database.js"></script>
 
     <script src="js/jquery-dateformat.min.js"></script>
-
 </head>
 <body>
 
@@ -80,7 +76,7 @@
                     </div>
                     </h3>
                     <div class=bluetooth-container>
-                        <i title="notoncall" data-title="call-active" class="fas fa-phone"></i>
+                        <i title="notoncall" data-title="call-active" class="fal fa-phone"></i>
                         <a class="action bluetooth-icon" name="9" data-info="command-9" title="disconnected"
                            data-title="bluetooth-icon">
                             <i class="action fab fa-bluetooth"></i>
@@ -112,7 +108,7 @@
                             <div class="options">
                                 <div class="btn-group">
                                     <button name="fullscreen" type="button" class="fullscreen btn btn-lg btn-default">
-                                        <i class="fas fa-expand"></i>
+                                        <i class="fal fa-expand"></i>
                                     </button>
                                 </div>
                             </div>
@@ -159,16 +155,16 @@
                     <span style="font-size: 20px;">D</span>
                 </button>
                 <button name="7" data-info="command-7" type="button" class="action btn btn-lg  btn-default btn-disabled">
-                    <i class="fas fa-redo-alt"></i>
+                    <i class="fal fa-sync"></i>
                 </button>
                 <button name="6" data-info="command-6" type="button" class="action btn btn-lg  btn-default btn-disabled">
-                    <i class="fas fa-volume-up"></i>
+                    <i class="fal fa-volume-up"></i>
                 </button>
                 <button name="0" data-info="command-0" type="button" class="action btn btn-lg btn-default btn-disabled">
-                    <i class="fas fa-exchange-alt"></i>
+                    <i class="fal fa-exchange"></i>
                 </button>
                 <button name="5" data-info="command-5" type="button" class="action btn btn-lg btn-default btn-disabled">
-                    <i class="fas fa-forward"></i></i>
+                    <i class="fal fa-forward"></i>
                 </button>
             </div>
         </div>
