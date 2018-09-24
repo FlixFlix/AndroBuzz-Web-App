@@ -9,8 +9,9 @@ let msgSymbols = [
 ];
 let //symbolSending = '<i class="fas fa-hourglass fa-spin"></i>',
 	symbolSending = '<span class=loader></span>',
-	symbolSent = '<i class="fas fa-check icon-delivered"></i>',
-	symbolError = '<i class="fas fa-exclamation-triangle icon-delivered"></i>';
+	symbolDelivered = '<i class="fal fa-check icon-delivery-status"></i>',
+	symbolSkipped = '<i class="fal fa-forward icon-delivery-status"></i>',
+	symbolError = '<i class="fal fa-exclamation-triangle icon-delivery-status"></i>';
 let database,
 	seconds,
 	start_time,
@@ -178,12 +179,12 @@ function handleFirebaseResponse( data ) {
 
 			// Check if it was skipped due to
 			if ( snapshot['extras'] && snapshot['extras'].indexOf( "skipped" ) !== -1 ) {
+				lastSkipped = true;
 				redraw( 'status', 'Too soon! Skipped.' );
 				$.when( removePill( "skipping" ) ).then( function() {
 					addPill( "5", timestamp );
-					lastSkipped = true;
 				} );
-			}
+			} else lastSkipped = false;
 
 			let signal = JSON.parse( snapshot['signal'] );
 			signalInfo = snapshot['signalInfo'];
@@ -210,11 +211,13 @@ function handleFirebaseResponse( data ) {
 			updateChart( [server_ping, firebase_ping, device_ping] );
 			$( '.battery__indicator .level' ).width( batteryLevel + "%" );
 
+			let suffix;
+			if ( lastSkipped ) suffix = symbolSkipped; else suffix = symbolDelivered;
+			// view['command-' + command] = msgSymbols[command] + suffix;
+			redraw('command-' + command, msgSymbols[command] + suffix);
+
 			redraw();
-
 			$( '.action' ).blur();
-			redraw( 'command-' + command, msgSymbols[command] + symbolSent );
-
 			clearTimeout( timeOut );
 			dataRef.off();
 		}
@@ -227,7 +230,6 @@ function actionCommand( el ) {
 	let command = el.attr( 'name' );
 	redraw( 'status', 'Sending message... ' + command );
 	redraw( 'error', '' );
-	$('.icon-delivered').remove();
 	redraw( 'command-' + command, symbolSending );
 	seconds = 0;
 	let currentTime = new Date(),
@@ -264,6 +266,8 @@ function actionCommand( el ) {
 			redraw( 'error', '<pre>' + e.responseText + '</pre>' );
 		}
 	} );
+
+	$( '.icon-delivery-status' ).remove();
 	return false;
 }
 

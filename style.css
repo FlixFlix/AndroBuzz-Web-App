@@ -105,7 +105,7 @@
       opacity: 1; }
   .bluetooth-container > * {
     display: inline-block; }
-  .bluetooth-container .icon-delivered {
+  .bluetooth-container .icon-delivery-status {
     display: none; }
   .bluetooth-container a {
     cursor: pointer; }
@@ -549,9 +549,6 @@ progress[value] {
   /*max-width: 500px; disabled for dev purposes */
   padding: 0; }
 
-.float-bottom {
-  margin-top: auto; }
-
 #main-wrapper {
   margin: 0 auto 10px;
   padding: 0 10px;
@@ -581,12 +578,15 @@ progress[value] {
   border-right: none; }
 
 .btn-group-justified.float-bottom {
+  margin-top: auto;
   width: 100%;
   display: flex; }
   .btn-group-justified.float-bottom .btn {
     flex: 1 0 20%;
     min-height: 2em;
-    width: auto; }
+    width: auto;
+    font-size: 20px;
+    font-weight: 300; }
 
 .panel {
   margin-bottom: 10px; }
@@ -601,12 +601,13 @@ progress[value] {
   padding-left: 10px;
   padding-right: 10px; }
 
-.icon-delivered {
+.icon-delivery-status {
   display: none;
   width: 20px;
   margin-right: -20px;
   text-align: right;
   font-size: 70%;
+  vertical-align: 1px;
   line-height: inherit; }
 
 @keyframes vanish {
@@ -647,7 +648,7 @@ progress[value] {
   color: #337ab7; }
 .body-fullscreen .abc button:nth-child(2) {
   background: #33b772; }
-.body-fullscreen .icon-delivered {
+.body-fullscreen .icon-delivery-status {
   display: inline-block; }
 
 /*!

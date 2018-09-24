@@ -152,7 +152,7 @@
             </div>
             <div class="float-bottom btn-group btn-group-justified">
                 <button name="4" data-info="command-4" type="button" class="action btn btn-lg btn-default btn-disabled">
-                    <span style="font-size: 20px;">D</span>
+                    D
                 </button>
                 <button name="7" data-info="command-7" type="button" class="action btn btn-lg  btn-default btn-disabled">
                     <i class="fal fa-sync"></i>

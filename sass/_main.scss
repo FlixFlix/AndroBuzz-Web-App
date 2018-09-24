@@ -276,9 +276,6 @@ progress[value] {
 	padding: 0;
 }
 
-.float-bottom {
-	margin-top: auto;
-}
 #main-wrapper {
 	margin: 0 auto 10px;
 	padding: 0 10px;
@@ -313,12 +310,15 @@ progress[value] {
 }
 
 .btn-group-justified.float-bottom {
+	margin-top: auto;
 	width: 100%;
 	display: flex;
 	.btn {
 		flex: 1 0 20%;
 		min-height: 2em;
 		width: auto;
+		font-size: 20px;
+		font-weight: 300;
 	}
 }
 
@@ -338,12 +338,13 @@ progress[value] {
 	padding-right: 10px;
 }
 
-.icon-delivered {
+.icon-delivery-status {
 	display: none;
 	width: 20px;
 	margin-right: -20px;
 	text-align: right;
 	font-size: 70%;
+	vertical-align: 1px;
 	//animation: vanish 7s linear forwards;
 	line-height: inherit;
 }
