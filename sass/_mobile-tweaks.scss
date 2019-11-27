@@ -6,24 +6,44 @@
 
 	#main-wrapper, #main-view {
 		padding: 0;
+		max-width: none;
 	}
 
 	.btn-group, .abc {
+		margin-bottom: 0;
 		> .btn {
 			border-radius: 0;
 			&.btn-primary {
 				border: none;
 			}
+			+.btn {
+				margin-top: 0;
+			}
+		}
+	}
+
+	.abc {
+		.btn + .btn {
+			border-top: 5px solid #fff;
 		}
 	}
 
 	.panel-primary {
 		border: none;
 		border-radius: 0;
+		margin-bottom: 0;
 		.panel-heading {
 			border: none;
 			border-radius: 0;
 		}
+	}
+
+	.float-bottom .btn {
+		border-top: none;
+	}
+
+	progress[value]::-webkit-progress-bar, progress[value]::-webkit-progress-value{
+		border-radius: 0;
 	}
 
 }

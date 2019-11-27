@@ -1,0 +1,51 @@
+.status-icons {
+	margin-right: 15px;
+	> * {
+		display: inline-block;
+	}
+
+	i {
+		color: white;
+		font-size: 20px;
+	}
+
+	i[title="notgood"] {
+		color: red;
+	}
+
+	.call {
+		margin-right: 5px;
+		&.call-inactive {
+			opacity: 0.2;
+		}
+	}
+
+	.call-active + .bluetooth.disconnected { // in a call (true) and Bluetooth is disconnected (critical)
+		color: red;
+		opacity: 1;
+		animation: flashing 1s infinite;
+	}
+
+	.bluetooth.disconnected { // Not in a call with BT disconnected (no big deal)
+		opacity: 0.2;
+	}
+
+}
+
+.bluetooth-name {
+	margin-left: 3px;
+	font-size: 9px;
+	vertical-align: 4px;
+	text-transform: uppercase;
+}
+
+@keyframes flashing {
+	from {
+		opacity: 1;
+		transform: scale(3);
+	}
+	to {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+}

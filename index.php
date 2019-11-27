@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Androbuzz!</title>
+    <title>Androbuzz</title>
     <meta name="theme-color" content="#ffffff">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -16,7 +16,7 @@
     <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
-    <link rel="stylesheet" href="style.css?v=<?php echo filemtime(__DIR__.'/style.css')?>">
+    <link rel="stylesheet" href="css/style.css?v=<?php echo filemtime(__DIR__.'/css/style.css')?>">
 
     <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
     <link rel="shortcut icon" href="icons/favicon.ico">
@@ -75,12 +75,9 @@
                         </h3>
                     </div>
                     </h3>
-                    <div class=bluetooth-container>
-                        <i title="notoncall" data-title="call-active" class="fal fa-phone"></i>
-                        <a class="action bluetooth-icon" name="9" data-info="command-9" title="disconnected"
-                           data-title="bluetooth-icon">
-                            <i class="action fab fa-bluetooth"></i>
-                        </a>
+                    <div class=status-icons>
+                        <i title="notoncall" data-title="call-active" class="call call-inactive fal fa-phone"></i>
+                            <i data-title="bluetooth-icon" class="bluetooth disconnected fab fa-bluetooth-b"></i>
                         <!--                        <span class="bluetooth-name" data-info="bluetooth-name">bluetooth</span>-->
                     </div>
                     <div class=battery-container data-title="battery-level">
@@ -107,24 +104,33 @@
                         <div class="info-row">
                             <div class="options">
                                 <div class="btn-group">
-                                    <button name="fullscreen" type="button" class="fullscreen btn btn-lg btn-default">
+                                    <button title="Fullscreen controls (useful on mobile)"name="fullscreen" type="button" class="fullscreen btn btn-lg btn-default">
                                         <i class="fal fa-expand"></i>
+                                    </button>
+                                    <button title="Audio route"name="audio-route" type="button" class="audio-route btn btn-lg btn-default">
+                                        <i class="fal fa-volume-off">&nbsp;</i><i class="fab fa-bluetooth-b"></i>
+                                    </button>
+                                    <button title="Clear progress"name="clear-progress" type="button" class="clear-progress btn btn-lg btn-default">
+                                        <i class="fal fa-trash-alt"></i>
                                     </button>
                                 </div>
                             </div>
                             <div class="segment">
                                 <div class="btn-group">
                                     <button name="basic" type="button" class="btn btn-lg btn-default">
-                                        <span>Basic</span>
+                                        <i class="fal fa-steering-wheel"></i>
                                     </button>
                                     <button name="general" type="button" class="btn btn-lg btn-default active">
-                                        <span>General</span>
+                                        <i class="fal fa-truck"></i>
                                     </button>
-                                    <button name="general" type="button" class="btn btn-lg btn-default">
-                                        <span>Combo</span>
+                                    <button name="combo" type="button" class="btn btn-lg btn-default">
+                                        <i class="fal fa-truck-container"></i>
                                     </button>
-                                    <button name="general" type="button" class="btn btn-lg btn-default">
-                                        <span>Air</span>
+                                    <button name="air" type="button" class="btn btn-lg btn-default">
+                                        <i class="fal fa-circle-notch"></i>
+                                    </button>
+                                    <button name="custom" type="button" class="btn btn-lg btn-default">
+                                        <i class="fal fa-ellipsis-h"></i>
                                     </button>
                                 </div>
                             </div>
@@ -154,14 +160,20 @@
                 <button name="4" data-info="command-4" type="button" class="action btn btn-lg btn-default btn-disabled">
                     D
                 </button>
-                <button name="7" data-info="command-7" type="button" class="action btn btn-lg  btn-default btn-disabled">
+                <button name="7" data-info="command-7" type="button" class="hidden action btn btn-lg  btn-default btn-disabled">
                     <i class="fal fa-sync"></i>
                 </button>
                 <button name="6" data-info="command-6" type="button" class="action btn btn-lg  btn-default btn-disabled">
-                    <i class="fal fa-volume-up"></i>
+                    <i class="fal fa-exclamation-triangle"></i>
                 </button>
                 <button name="0" data-info="command-0" type="button" class="action btn btn-lg btn-default btn-disabled">
                     <i class="fal fa-exchange"></i>
+                </button>
+                <button name="9" data-info="command-9" type="button" class="action btn btn-lg btn-default btn-disabled">
+                    <i class="fab fa-bluetooth-b"></i>
+                </button>
+                <button name="10" data-info="command-10" type="button" class="action btn btn-lg btn-default btn-disabled">
+                    <i class="fal fa-volume-up"></i>
                 </button>
                 <button name="5" data-info="command-5" type="button" class="action btn btn-lg btn-default btn-disabled">
                     <i class="fal fa-forward"></i>

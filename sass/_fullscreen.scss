@@ -1,9 +1,16 @@
+.fullscreen.btn {
+	padding: 6px 10px 4px;
+}
+
 .body-fullscreen {
 	.fullscreen.btn {
 		color: $bs-color--blue;
+		.fa-expand:before {
+			content: "\f066";
+		}
 	}
 	.abc button:nth-child(2) {
-		background: #33b772;
+		//background: #33b772;
 	}
 	.icon-delivery-status {
 		display: inline-block;

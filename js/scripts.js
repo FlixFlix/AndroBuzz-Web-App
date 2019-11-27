@@ -1,14 +1,14 @@
 let msgSymbols = [
-	'<i class="fal fa-exchange"></i>',
-	'A', 'B', 'C', 'D',
-	'<i class="fal fa-forward"></i>',
-	'<i class="fal fa-volume-up"></i>',
-	'<i class="fal fa-sync"></i>',
-	'8',
-	'<i title="disconnected" data-title="bluetooth-icon" class="fab fa-bluetooth"></i>',
+	/* 0 */     '<i class="fal fa-exchange"></i>',
+	/* 1234 */  'A', 'B', 'C', 'D',
+	/* 5 */     '<i class="fal fa-forward"></i>',
+	/* 6 */     '<i class="fal fa-exclamation-triangle"></i>',
+	/* 7 */        '<i class="fal fa-sync"></i>',
+	/* 8 */     '8',
+	/* 9 */        '<i title="disconnected" data-title="bluetooth-icon" class="fab fa-bluetooth-b"></i>',
+	/* 10 */    '<i title="speaker" data-title="speaker" class="fa fa-volume"></i>',
 ];
-let //symbolSending = '<i class="fas fa-hourglass fa-spin"></i>',
-	symbolSending = '<span class=loader></span>',
+let symbolSending = '<span class=loader></span>',
 	symbolDelivered = '<i class="fal fa-check icon-delivery-status"></i>',
 	symbolSkipped = '<i class="fal fa-forward icon-delivery-status"></i>',
 	symbolError = '<i class="fal fa-exclamation-triangle icon-delivery-status"></i>';
@@ -21,18 +21,38 @@ let database,
 	batteryLevel,
 	signal,
 	lastSkipped = false,
+
+	// DOM elements
 	$statusConsole,
 	$statusConsoleContainer,
-	view,
+	view = [],
 	$mainView,
 
 	// Progress indicator
 	$statusConsolePositioner,
 	pillWidth,
-	progress = 0,
-	segmentLengths = [24, 24, 16, 20],
+	numberCompleted = 0,
+	segmentLengths = [24, 24, 16, 20, 40],
 	currentSegment = 0;
 
+// Set up variables
+function initializeVars() {
+	view = {};
+	$mainView = $( '#main-view' );
+	$statusConsole = $( '#console' );
+	$statusConsoleContainer = $( '.console-container' );
+	$statusConsolePositioner = $( '.positioner' );
+	pillWidth = ($statusConsole.width() + 4) / 10;
+}
+
+//
+$( window ).on( 'resize', function() {
+	pillWidth = ($statusConsole.width() + 4) / 10;
+	$( '.buzz' ).width( pillWidth );
+	redraw();
+} );
+
+// Phone number formatter
 function formatPhoneNumber( s ) {
 	if ( s[0] == '1' ) {
 		s = s.substr( 1 );
@@ -48,9 +68,9 @@ function initFirebaseConfig() {
 	let config = {};
 	switch ( url ) {
 		case 'androbuzz.iredesigned.com/':
-			// config.apiKey = "AIzaSyClbcP5VcyQnl93OplUJHsQbAJikiDfJec";
-			// config.databaseURL = "https://androbuzz-prod.firebaseio.com/" // PROD
-			// break;
+		// config.apiKey = "AIzaSyClbcP5VcyQnl93OplUJHsQbAJikiDfJec";
+		// config.databaseURL = "https://androbuzz-prod.firebaseio.com/" // PROD
+		// break;
 		case 'androbuzz.iredesigned.com/dev':
 		case 'ab.test/':
 			config.apiKey = "AIzaSyAc286y-5g5WL4vtSgCsmEV_afxYyO_kYM";
@@ -62,15 +82,6 @@ function initFirebaseConfig() {
 			config.databaseURL = "https://androbuzz-dev.firebaseio.com/"; // DEV
 	}
 	return config;
-}
-
-function initializeVars() {
-	view = {};
-	$mainView = $( '#main-view' );
-	$statusConsole = $( '#console' );
-	$statusConsoleContainer = $( '.console-container' );
-	$statusConsolePositioner = $( '.positioner' );
-	pillWidth = ($statusConsole.width() + 4) / 10;
 }
 
 // Retrieve registered devices from database
@@ -94,7 +105,7 @@ function getPhones() {
 			// Create the dropdown options
 			let dropdownHTML = '';
 			devices.forEach( function( device ) {
-				if (device['deactivated'] !== "true") {
+				if ( device['deactivated'] !== "true" ) {
 					dropdownHTML += '<li>' +
 						'<a title="Registered on ' + device['regDate'] + '\nRegistration token: ' + device['regToken']
 						+ '" class="dropDownItem"'
@@ -141,6 +152,10 @@ function getPhones() {
 			redraw( 'error', 'Error retrieving devices\n<pre>' + e.responseText + '</pre>' );
 		}
 	} );
+}
+
+function sendToDevice() {
+
 }
 
 function handleFirebaseResponse( data ) {
@@ -197,10 +212,17 @@ function handleFirebaseResponse( data ) {
 			view['signal-dbm'] = signal.dbm + " dBm " + signal.type.toUpperCase();
 			view['bluetooth-name'] = signal.bt;
 			view['bluetooth-icon'] = signal.route;
-			if ( signal.oncall == "true" ) view['call-active'] = signal.oncall; else view['call-active'] = "false";
+			if ( signal.oncall == "true" ) {
+				view['call-active'] = signal.oncall;
+				$('.status-icons .call').addClass('call-active').removeClass('call-inactive');
+			} else {
+				view['call-active'] = "false";
+				$('.status-icons .call').addClass('call-inactive').removeClass('call-active');
+			}
 
 			// view['signal-type'] = signal.type;
 			view['battery-level'] = batteryLevel + "%";
+			$( '.battery .level' ).width( batteryLevel + "%" );
 
 			// todo calculate exact ping based on time delivered vs time sent
 			// todo vibration animation on pill plus negative delay based on actual delivery
@@ -214,7 +236,7 @@ function handleFirebaseResponse( data ) {
 			let suffix;
 			if ( lastSkipped ) suffix = symbolSkipped; else suffix = symbolDelivered;
 			// view['command-' + command] = msgSymbols[command] + suffix;
-			redraw('command-' + command, msgSymbols[command] + suffix);
+			redraw( 'command-' + command, msgSymbols[command] + suffix );
 
 			redraw();
 			$( '.action' ).blur();
@@ -277,9 +299,8 @@ function redraw( field, value ) {
 	$mainView = $( '#main-view' );
 	if ( $( 'body' ).hasClass( 'body-fullscreen' ) ) {
 		// ABC buttons will occupy entire screen
-		$( '.abc' ).css( 'height', windowHeight );
+		$( '.abc' ).css( 'height', windowHeight - $( '.float-bottom' ).height() );
 		$mainView.css( 'height', 'auto' );
-		// $( '.abc' ).scrollTop( 0 );
 		$( 'html, body' ).animate( { scrollTop: $( '.abc' ).offset().top }, 'fast' );
 	} else {
 		$mainView.css( 'height', windowHeight + 'px' );
@@ -310,6 +331,7 @@ function addPill( command, timestamp ) {
 	$( '.action_pill' ).css( 'width', pillWidth );
 	updateProgress();
 }
+
 function removePill( $pill ) {
 	if ( $pill === "skipping" ) {
 		// We're removing the last TWO commands
@@ -327,6 +349,7 @@ function removePill( $pill ) {
 		} );
 	}
 }
+
 function scrollHistory() {
 	let numberOfCommands = $statusConsole.find( '.buzz' ).length;
 	let positionerPosition = -4;
@@ -341,17 +364,24 @@ setInterval( function() {
 	if ( seconds < 60 )
 		$( '#timer' ).html( seconds + 's ago' );
 	else
-		$( '#timer' ).html( Math.floor(seconds / 60) + ' minutes ago' );
+		$( '#timer' ).html( Math.floor( seconds / 60 ) + ' minutes ago' );
 	++seconds;
 }, 1000 );
 
 // Update progress bar
 function updateProgress() {
-	progress = $( '#console' ).find( '[data-command=1],[data-command=2],[data-command=3],[data-command=4]' ).length;
-	$( 'progress' ).attr( 'value', progress );
-	$( 'progress' ).attr( 'max', segmentLengths[currentSegment] );
-	$( '.progress-info' ).css( { 'right': $( 'progress' ).width() * (Math.max( segmentLengths[currentSegment] - progress, 0 )) / segmentLengths[currentSegment] + 'px' } );
-	redraw( "progress-info", progress + "/" + segmentLengths[currentSegment] );
+	let stepWidth = $( 'progress' ).width() / segmentLengths[currentSegment];
+	let numberCompleted = $( '#console' ).find( '[data-command=1],[data-command=2],[data-command=3],[data-command=4]' ).length;
+	$( 'progress' ).attr( { 'value': numberCompleted, 'max': segmentLengths[currentSegment] } );
+	redraw( "progress-info", numberCompleted + "/" + segmentLengths[currentSegment] );
+
+	let percentageCompleted = numberCompleted / segmentLengths[currentSegment];
+	let progressPosition = $( 'progress' ).width() * (1 - percentageCompleted);
+	let textPosition = progressPosition;
+	let textWidth = ('.progress-info')
+	$( '.progress-info' ).css( { 'right': Math.abs( textPosition ) + 'px' } );
+
+	if ( numberCompleted > segmentLengths[currentSegment] ) numberCompleted = segmentLengths[currentSegment];
 }
 
 // Ping chart graph using chartist.js
@@ -383,19 +413,18 @@ let chart,
 		chartPadding: 0,
 		low: 0
 	};
+
 function initChart() {
 	chart = new Chartist.Line( '.ct-chart', chartData, chartOptions );
 	chart.on( 'draw', function( context ) {
-		// First we want to make sure that only do something when the draw event is for bars. Draw events do get fired for labels and grids too.
 		if ( context.type === 'line' ) {
-			// With the Chartist.Svg API we can easily set an attribute on our bar that just got drawn
 			context.element.attr( {
-				// Now we set the style attribute on our bar to override the default color of the bar. By using a HSL colour we can easily set the hue of the colour dynamically while keeping the same saturation and lightness. From the context we can also get the current value of the bar. We use that value to calculate a hue between 0 and 100 degree. This will make our bars appear green when close to the maximum and red when close to zero.
 				style: 'stroke: hsl(' + Math.floor( Chartist.getMultiValue( context.value ) / max * 100 ) + ', 50%, 50%);'
 			} );
 		}
 	} );
 }
+
 function updateChart( pingSet ) {
 	for ( let i = 0; i <= 2; i++ ) {
 		chartData.series[i].push( parseInt( pingSet[i] ) );
@@ -413,11 +442,13 @@ function bindButtonFunctions() {
 		actionCommand( $( this ) );
 	} );
 
-	// Not used
-	$( '#CLEAR' ).on( 'click', function() {
-		$( '#console' ).find( 'span' ).slideUp( 'normal', function() {
-			$( this ).remove();
-		} );
+	// Clear progress
+	$( '.clear-progress' ).on( 'click', function() {
+		if ( confirm( "Clear progress and move to next segment?" ) ) {
+			removePill( $( '.buzz' ) );
+			let $nextSegmentButton = $( '.segment' ).find( 'button.active' ).next();
+			if ( $nextSegmentButton.length && $nextSegmentButton.attr( 'name' ) !== 'custom' ) $nextSegmentButton.click();
+		}
 	} );
 
 	// Select segment
@@ -425,6 +456,19 @@ function bindButtonFunctions() {
 		$( '.segment .btn' ).removeClass( 'active' );
 		$( this ).addClass( 'active' );
 		currentSegment = $( this ).index();
+
+		/*
+				$( this ).each( function() {
+					$.each( this.attributes, function() {
+						// this.attributes is not a plain object, but an array
+						// of attribute nodes, which contain both the name and value
+						if ( true || this.specified ) {
+							console.log( this.name, this.value );
+						}
+					} );
+				} );
+		*/
+		if ( this.name == 'custom' ) segmentLengths[4] = prompt( "Enter segment length", 40 );
 		updateProgress();
 	} );
 
