@@ -1,11 +1,11 @@
 
 \.idea/
 
-*.map
+# *.map
 
 *.txt
 
-style\.css
+# style\.css
 
 \.htaccess
 
